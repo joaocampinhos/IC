@@ -47,6 +47,7 @@ TOKEN :
   | < GT:    ">"   >
   | < LT:    "<"   >
   | < IF:    "?"   >
+  | < NOT:   "!"   >
 }
 
 ASTNode Start():
