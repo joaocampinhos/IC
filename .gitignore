@@ -19,3 +19,6 @@ ParseException.java
 ParserConstants.java
 SimpleCharStream.java
 ParserTokenManager.java
+
+# Outras cenas
+*.swp
