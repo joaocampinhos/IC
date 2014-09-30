@@ -2,22 +2,25 @@ J = java
 JC = javac
 JCC = javacc
 DIR=Parser
+TITLE ="cenas"
 
 default: javacc javac run
 
-run: classes
-	$(call log,Run)
+run:
+	@echo "------------------"
+	@echo " Run              "
+	@echo "------------------"
 	$(J)  $(DIR)
 
-classes: $(CLASSES:.java=.class)
-
 javacc:
-	$(call log,Javacc)
+	@echo "------------------"
+	@echo " Javacc           "
+	@echo "------------------"
 	$(JCC) $(DIR).jj
 
 javac:
-	$(call log,Javac)
+	@echo "------------------"
+	@echo " Java             "
+	@echo "------------------"
 	$(JC) $(DIR).java
 
-log=\
-	@echo "------------------\n $(1)            \n------------------"
