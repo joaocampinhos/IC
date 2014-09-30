@@ -109,3 +109,17 @@ ASTNode Fact() :
     return t;
   }
 }
+
+
+ASTNode ELog():{
+  ASTNode t1, t2;
+}
+{
+  ( t1 = Exp() <EQ><EQ> t2 = Exp()
+  {
+      t1 = new ASTEquals(t1,t2);
+  })
+  {
+    return t1;
+  }
+}
