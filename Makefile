@@ -4,7 +4,9 @@ JCC = javacc
 DIR=Parser
 TITLE ="cenas"
 
-default: javacc javac run
+default: javacc javac
+
+b: default run
 
 run:
 	@echo "------------------"
