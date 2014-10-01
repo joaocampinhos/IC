@@ -1,8 +1,8 @@
 public class ASTNum implements ASTNode {
   int val;
 
-  public int eval() {
-    return val;
+  public Object eval() {
+    return (int)val;
   }
 
   public ASTNum(int n) {

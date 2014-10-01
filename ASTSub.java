@@ -1,8 +1,8 @@
 public class ASTSub implements ASTNode {
   ASTNode left, right;
 
-  public int eval() {
-    return left.eval() - right.eval();
+  public Object eval() {
+    return (int)left.eval() - (int)right.eval();
   }
 
   public ASTSub(ASTNode l, ASTNode r) {

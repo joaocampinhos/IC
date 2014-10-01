@@ -1,8 +1,8 @@
 public class ASTMul implements ASTNode {
   ASTNode left, right;
 
-  public int eval() {
-    return left.eval() * right.eval();
+  public Object eval() {
+    return (int)left.eval() * (int)right.eval();
   }
 
   public ASTMul(ASTNode l, ASTNode r) {

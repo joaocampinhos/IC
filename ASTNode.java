@@ -1,4 +1,4 @@
 public interface ASTNode {
-  int eval();
+  Object eval();
   //void compile(CodeBlock c);
 }

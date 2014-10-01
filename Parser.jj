@@ -32,32 +32,79 @@ SKIP :
 
 TOKEN :
 {
-  < ID:    ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
-  | < NUM: ["1"-"9"] (["0"-"9"])* >
-  | < PLUS : "+"   >
-  | < MINUS: "-"   >
-  | < TIMES: "*"   >
-  | < DIV:   "/"   >
-  | < EL:    "\n"  >
-  | < LPAR:  "("   >
-  | < RPAR:  ")"   >
-  | < OR:    "||"  >
-  | < AND:   "&&"  >
-  | < EQ:    "="   >
-  | < GT:    ">"   >
-  | < LT:    "<"   >
-  | < IF:    "?"   >
-  | < NOT:   "!"   >
+  //< ID:    ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
+  < NUM: ["1"-"9"] (["0"-"9"])* >
+  | < PLUS : "+"    >
+  | < MINUS: "-"    >
+  | < TIMES: "*"    >
+  | < DIV:   "/"    >
+  | < EL:    "\n"   >
+  | < LPAR:  "("    >
+  | < RPAR:  ")"    >
+  | < OR:    "||"   >
+  | < AND:   "&&"   >
+  | < EQ:    "="    >
+  | < GT:    ">"    >
+  | < LT:    "<"    >
+  | < IF:    "?"    >
+  | < ELSE:  ":"    >
+  | < NOT:   "!"    >
+  | < TRUE:  "true" >
+  | < FALSE: "false">
 }
 
 ASTNode Start():
 {
-  ASTNode t;
+  ASTNode t1, t2;
 }
 {
-  t = Exp() <EL>
+  t1 = TLog() <EL>
   {
-    return t;
+    return t1;
+  }
+}
+
+ASTNode TLog():
+{
+  ASTNode t1, t2;
+}
+{
+  t1 = Ecmp() ( <AND> t2 = Ecmp()
+  {
+    //NOVO ASTAND
+    //NOVO ASTOR
+  })*
+  {
+    return t1;
+  }
+}
+
+ASTNode Ecmp():
+{
+  ASTNode t1, t2;
+}
+{
+  t1 = Ecard() ( <EQ><EQ> t2 = Ecard()
+  {
+      t1 = new ASTEquals(t1,t2);
+      // FALTA O MAIOR MENOR ETC
+  })?
+  {
+    return t1;
+  }
+}
+
+ASTNode Ecard():
+{
+  ASTNode t1, t2, t3;
+}
+{
+  t1 = Exp() ( <IF> t2 = Exp() <ELSE> t3 = Exp()
+  {
+    //NEW ASTCENAS :)
+  })?
+  {
+    return t1;
   }
 }
 
@@ -85,13 +132,13 @@ ASTNode Term():
   ASTNode t1, t2;
 }
 {
-  t1 = Fact() ( ( op = <TIMES> | op = <DIV> ) t2 = Term()
+  t1 = Fact() ( ( op = <TIMES> | op = <DIV> ) t2 = Fact()
   {
     if (op.kind == TIMES)
       t1 = new ASTMul(t1,t2);
     else
       t1 = new ASTDiv(t1,t2);
-   })?
+   })*
   {
     return t1;
   }
@@ -104,22 +151,10 @@ ASTNode Fact() :
   ASTNode t;
 }
 {
-  ( n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); } | <LPAR> t=Exp() <RPAR> )
-  {
-    return t;
-  }
+  n=<NUM> {return new ASTNum(Integer.parseInt(n.image)); }
+  | <LPAR> t=Exp() <RPAR>{return t;}
+  | (n=<TRUE>|n=<FALSE>) {return new ASTBool(n.image); }
+  //FALTA O -X
 }
 
 
-ASTNode ELog():{
-  ASTNode t1, t2;
-}
-{
-  ( t1 = Exp() <EQ><EQ> t2 = Exp()
-  {
-      t1 = new ASTEquals(t1,t2);
-  })
-  {
-    return t1;
-  }
-}
