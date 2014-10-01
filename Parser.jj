@@ -43,12 +43,15 @@ TOKEN :
   | < RPAR:  ")"    >
   | < OR:    "||"   >
   | < AND:   "&&"   >
-  | < EQ:    "="    >
+  | < EQ:    "=="   >
   | < GT:    ">"    >
+  | < GET:   ">="   >
   | < LT:    "<"    >
+  | < LET:   "<="   >
   | < IF:    "?"    >
   | < ELSE:  ":"    >
   | < NOT:   "!"    >
+  | < NOTE:  "!="   >
   | < TRUE:  "true" >
   | < FALSE: "false">
 }
@@ -84,13 +87,24 @@ ASTNode TLog():
 
 ASTNode Ecmp():
 {
+  Token op;
   ASTNode t1, t2;
 }
 {
-  t1 = Ecard() ( <EQ><EQ> t2 = Ecard()
+  t1 = Ecard() ( (op = <EQ> | op = <NOTE> | op = <GT> | op = <GET> | op = <LT> | op = <LET> ) t2 = Ecard()
   {
+    if (op.kind == EQ )
       t1 = new ASTEquals(t1,t2);
-      // FALTA O MAIOR MENOR ETC
+    else if (op.kind == NOTE )
+      t1 = new ASTNotEquals(t1,t2);
+    else if (op.kind == GT )
+      t1 = new ASTGthen(t1,t2);
+    else if (op.kind == GET )
+      t1 = new ASTGEthen(t1,t2);
+    else if (op.kind == LT )
+      t1 = new ASTLthen(t1,t2);
+    else
+      t1 = new ASTLEthen(t1,t2);
   })?
   {
     return t1;
