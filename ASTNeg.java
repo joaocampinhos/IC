@@ -1,11 +1,11 @@
 public class ASTNeg implements ASTNode {
-  ASTNode right;
+  int val;
 
-  public int eval() {
-    return -right.eval();
+  public Object eval() {
+    return (int)-val;
   }
 
-  public ASTNeg(ASTNode r) {
-    right = r;
+  public ASTNeg(int n) {
+    val = n;
   }
 }

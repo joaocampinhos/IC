@@ -152,8 +152,9 @@ ASTNode Fact() :
 }
 {
   n=<NUM> {return new ASTNum(Integer.parseInt(n.image)); }
-  | <LPAR> t=Exp() <RPAR>{return t;}
+  | <LPAR> t=TLog() <RPAR>{return t;}
   | (n=<TRUE>|n=<FALSE>) {return new ASTBool(n.image); }
+  | <MINUS> n=<NUM> { return new ASTNeg(Integer.parseInt(n.image)); }
   //FALTA O -X
 }
 
