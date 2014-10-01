@@ -66,13 +66,16 @@ ASTNode Start():
 
 ASTNode TLog():
 {
+  Token op;
   ASTNode t1, t2;
 }
 {
-  t1 = Ecmp() ( <AND> t2 = Ecmp()
+  t1 = Ecmp() ( (op = <AND> | op = <OR>) t2 = Ecmp()
   {
-    //NOVO ASTAND
-    //NOVO ASTOR
+    if (op.kind == AND)
+      t1 = new ASTAnd(t1, t2);
+    else
+      t1 = new ASTOr(t1, t2);
   })*
   {
     return t1;
@@ -155,7 +158,6 @@ ASTNode Fact() :
   | <LPAR> t=TLog() <RPAR>{return t;}
   | (n=<TRUE>|n=<FALSE>) {return new ASTBool(n.image); }
   | <MINUS> n=<NUM> { return new ASTNeg(Integer.parseInt(n.image)); }
-  //FALTA O -X
 }
 
 
