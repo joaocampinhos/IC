@@ -61,7 +61,21 @@ ASTNode Start():
   ASTNode t1, t2;
 }
 {
-  t1 = TLog() <EL>
+  t1 = ELog() <EL>
+  {
+    return t1;
+  }
+}
+
+ASTNode ELog():
+{
+  ASTNode t1, t2;
+}
+{
+  t1 = TLog() ( <AND> t2 = TLog()
+  {
+    t1 = new ASTAnd(t1, t2);
+  })*
   {
     return t1;
   }
@@ -69,16 +83,12 @@ ASTNode Start():
 
 ASTNode TLog():
 {
-  Token op;
   ASTNode t1, t2;
 }
 {
-  t1 = Ecmp() ( (op = <AND> | op = <OR>) t2 = Ecmp()
+  t1 = Ecmp() ( <OR> t2 = Ecmp()
   {
-    if (op.kind == AND)
-      t1 = new ASTAnd(t1, t2);
-    else
-      t1 = new ASTOr(t1, t2);
+    t1 = new ASTOr(t1, t2);
   })*
   {
     return t1;
