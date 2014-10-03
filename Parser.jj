@@ -178,7 +178,8 @@ ASTNode Fact() :
 }
 {
   n=<NUM> {return new ASTNum(Integer.parseInt(n.image)); }
-  | <LPAR> t=TLog() <RPAR>{return t;}
+  | <LPAR> t=ELog() <RPAR>{return t;}
+  | <NOT> t=ELog() {return new ASTNot(t);}
   | (n=<TRUE>|n=<FALSE>) {return new ASTBool(n.image); }
   | <MINUS> n=<NUM> { return new ASTNeg(Integer.parseInt(n.image)); }
 }
