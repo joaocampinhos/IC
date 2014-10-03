@@ -32,7 +32,6 @@ SKIP :
 
 TOKEN :
 {
-  //< ID:    ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
   < NUM: ["1"-"9"] (["0"-"9"])* >
   | < PLUS : "+"    >
   | < MINUS: "-"    >
@@ -128,7 +127,7 @@ ASTNode Ecard():
 {
   t1 = Exp() ( <IF> t2 = Exp() <ELSE> t3 = Exp()
   {
-    //NEW ASTCENAS :)
+    t1 = new ASTIf(t1,t2,t3);
   })?
   {
     return t1;
