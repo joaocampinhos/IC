@@ -22,3 +22,5 @@ ParserTokenManager.java
 
 # Outras cenas
 *.swp
+*.j
+!jasmin.jar

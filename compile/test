@@ -1,0 +1,2 @@
+cat t1 i t2 > test.j
+java -jar jasmin.jar test.j

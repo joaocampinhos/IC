@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -22,7 +23,15 @@ public class CodeBlock {
     return myStack.iterator();
   }
 
-  public String debug() {
-    return myStack.toString();
+  public String debug() throws IOException {
+    FileWriter writer = new FileWriter(new File("compile/i"), false);
+    String result = "";
+    for(Iterator itr = myStack.iterator();itr.hasNext();)  {
+      result += itr.next()+"\n";
+    }
+    writer.write(result);
+    writer.close();
+    return result;
+
   }
 }
