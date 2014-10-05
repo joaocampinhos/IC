@@ -3,13 +3,17 @@ import java.util.LinkedList;
 
 public class CodeBlock {
 
-public  Deque<String> myStack= new LinkedList<String>();
-	
-	public void add(String instrucao){
-		myStack.add(instrucao);
-	}
-	
-	public String pop(){
-		return myStack.poll();
-	}
+  private  Deque<String> myStack;
+
+  public CodeBlock() {
+    myStack= new LinkedList<String>();
+  }
+
+  public void add(String instrucao){
+    myStack.add(instrucao);
+  }
+
+  public String pop(){
+    return myStack.poll();
+  }
 }

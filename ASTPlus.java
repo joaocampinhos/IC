@@ -10,7 +10,7 @@ public class ASTPlus implements ASTNode {
     right = r;
   }
 
-  public compile(Codeblock c) {
+  public void compile(CodeBlock c) {
     left.compile(c);
     right.compile(c);
     c.add("iadd");
