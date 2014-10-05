@@ -9,4 +9,10 @@ public class ASTAnd implements ASTNode {
     left = l;
     right = r;
   }
+
+  public void compile(CodeBlock c) {
+    left.compile(c);
+    right.compile(c);
+    c.add("iand");
+  }
 }
