@@ -21,14 +21,14 @@ public class ASTLEthen implements ASTNode {
   public void compile(CodeBlock c) {
     left.compile(c);
     right.compile(c);
-    c.add("if_icmple Igual");
+    c.add("if_icmple MNigual");
     c.add("sipush 0");
-    c.add("goto Dif");
+    c.add("goto NMNigual");
 
-    c.add("Igual:");
+    c.add("MNigual:");
     c.add("sipush 1");
 
-    c.add("Dif:");
+    c.add("NMNIgual:");
 
   }
 }

@@ -21,14 +21,14 @@ public class ASTGEthen implements ASTNode {
   public void compile(CodeBlock c) {
     left.compile(c);
     right.compile(c);
-    c.add("if_icmpge Igual");
+    c.add("if_icmpge Migual");
     c.add("sipush 0");
-    c.add("goto Dif");
+    c.add("goto NMigual");
 
-    c.add("Igual:");
+    c.add("Migual:");
     c.add("sipush 1");
 
-    c.add("Dif:");
+    c.add("NMigual:");
 
   }
 }
