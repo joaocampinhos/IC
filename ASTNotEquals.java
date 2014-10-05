@@ -24,6 +24,16 @@ public class ASTNotEquals implements ASTNode {
   }
 
   public void compile(CodeBlock c) {
-    
+    left.compile(c);
+    right.compile(c);
+    c.add("if_icmpne Nigual");
+    c.add("sipush 0");
+    c.add("goto Ndif");
+
+    c.add("Nigual:");
+    c.add("sipush 1");
+
+    c.add("Ndif:");
+
   }
 }

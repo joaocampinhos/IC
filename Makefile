@@ -9,7 +9,7 @@ default: clean javacc javac
 b: default run
 
 clean:
-	rm "*.class"
+	rm *.class
 	@echo "Classes apagadinhas"
 
 run:

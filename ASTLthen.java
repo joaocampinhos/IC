@@ -19,6 +19,16 @@ public class ASTLthen implements ASTNode {
   }
 
   public void compile(CodeBlock c) {
+    left.compile(c);
+    right.compile(c);
+    c.add("if_icmplt Igual");
+    c.add("sipush 0");
+    c.add("goto Dif");
+
+    c.add("Igual:");
+    c.add("sipush 1");
+
+    c.add("Dif:");
 
   }
 }
