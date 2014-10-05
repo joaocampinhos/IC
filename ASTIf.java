@@ -39,6 +39,14 @@ public class ASTIf implements ASTNode {
   }
 
   public void compile(CodeBlock c) {
+    exp.compile(c);
+    c.add("ifne Entra");
+    expelse.compile(c);
+    c.add("goto Saio");
 
+    c.add("Entra:");
+    expif.compile(c);
+
+    c.add("Saio:");
   }
 }
