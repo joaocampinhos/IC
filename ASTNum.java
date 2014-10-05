@@ -8,4 +8,8 @@ public class ASTNum implements ASTNode {
   public ASTNum(int n) {
     val = n;
   }
+
+  public compile(Codeblock c) {
+    c.add("sipush "+val);
+  }
 }

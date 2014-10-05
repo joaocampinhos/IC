@@ -9,4 +9,10 @@ public class ASTPlus implements ASTNode {
     left = l;
     right = r;
   }
+
+  public compile(Codeblock c) {
+    left.compile(c);
+    right.compile(c);
+    c.add("iadd");
+  }
 }
