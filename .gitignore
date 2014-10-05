@@ -24,3 +24,4 @@ ParserTokenManager.java
 *.swp
 *.j
 !jasmin.jar
+i

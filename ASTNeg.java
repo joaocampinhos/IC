@@ -8,4 +8,8 @@ public class ASTNeg implements ASTNode {
   public ASTNeg(int n) {
     val = n;
   }
+
+  public void compile(CodeBlock c) {
+    c.add("sipush "+(-val));
+  }
 }
