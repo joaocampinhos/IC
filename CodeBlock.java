@@ -17,8 +17,12 @@ public class CodeBlock {
   public String pop(){
     return myStack.poll();
   }
-  
+
   public Iterator<String> compile(){
-	  return myStack.iterator();
+    return myStack.iterator();
+  }
+
+  public String debug() {
+    return myStack.toString();
   }
 }
