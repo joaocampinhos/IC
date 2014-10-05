@@ -1,8 +1,8 @@
 public class ASTBool implements ASTNode {
   boolean val;
 
-  public Object eval() {
-    return (boolean)val;
+  public IValue eval() {
+    return new BoolValue(val);
   }
 
   public ASTBool(String n) {

@@ -4,9 +4,13 @@ JCC = javacc
 DIR=Parser
 TITLE ="cenas"
 
-default: javacc javac
+default: clean javacc javac
 
 b: default run
+
+clean:
+	rm "*.class"
+	@echo "Classes apagadinhas"
 
 run:
 	@echo "------------------"

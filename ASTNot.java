@@ -1,8 +1,14 @@
 public class ASTNot implements ASTNode {
   ASTNode t;
 
-  public Object eval() {
-    return !(boolean)t.eval();
+  public IValue eval() throws TypeError {
+    IValue i = t.eval();
+
+    if (i.typeOf() == IValue.VType.BOOLEAN) {
+      BoolValue v = (BoolValue)i;
+      return new BoolValue(!v.getVal());
+    }
+    else throw new TypeError();
   }
 
   public ASTNot(ASTNode n) {
