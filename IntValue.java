@@ -6,7 +6,7 @@ public class IntValue implements IValue {
     val = v;
   }
 
-  public VType typeof() {
+  public VType typeOf() {
     return VType.INTEGER;
   }
 

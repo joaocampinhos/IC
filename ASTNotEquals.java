@@ -22,4 +22,8 @@ public class ASTNotEquals implements ASTNode {
     left = l;
     right = r;
   }
+
+  public void compile(CodeBlock c) {
+    
+  }
 }

@@ -6,7 +6,7 @@ public class BoolValue implements IValue {
     val = v;
   }
 
-  public VType typeof() {
+  public VType typeOf() {
     return VType.BOOLEAN;
   }
 

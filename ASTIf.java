@@ -37,4 +37,8 @@ public class ASTIf implements ASTNode {
     expif = b;
     expelse = c;
   }
+
+  public void compile(CodeBlock c) {
+
+  }
 }

@@ -17,4 +17,8 @@ public class ASTLEthen implements ASTNode {
     left = l;
     right = r;
   }
+
+  public void compile(CodeBlock c) {
+
+  }
 }

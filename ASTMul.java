@@ -1,7 +1,7 @@
 public class ASTMul implements ASTNode {
   ASTNode left, right;
 
-  public IValue eval() {
+  public IValue eval() throws TypeError{
     IValue v1 = left.eval();
     IValue v2 = right.eval();
 

@@ -14,4 +14,8 @@ public class ASTNot implements ASTNode {
   public ASTNot(ASTNode n) {
     t = n;
   }
+
+  public void compile(CodeBlock c) {
+
+  }
 }
