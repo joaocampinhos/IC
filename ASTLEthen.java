@@ -19,16 +19,17 @@ public class ASTLEthen implements ASTNode {
   }
 
   public void compile(CodeBlock c) {
+    c.incCounter();
+    final String temp = c.getCounter();
     left.compile(c);
     right.compile(c);
-    c.add("if_icmple MNigual");
+    c.add("if_icmple MNigual"+temp);
     c.add("sipush 0");
-    c.add("goto NMNigual");
+    c.add("goto NMNigual"+temp);
 
-    c.add("MNigual:");
+    c.add("MNigual"+temp+":");
     c.add("sipush 1");
 
-    c.add("NMNIgual:");
-
+    c.add("NMNIgual"+temp+":");
   }
 }

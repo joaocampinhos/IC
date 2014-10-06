@@ -19,16 +19,17 @@ public class ASTLthen implements ASTNode {
   }
 
   public void compile(CodeBlock c) {
+    c.incCounter();
+    final String temp = c.getCounter();
     left.compile(c);
     right.compile(c);
-    c.add("if_icmplt Menor");
+    c.add("if_icmplt Menor"+temp);
     c.add("sipush 0");
-    c.add("goto Nmenor");
+    c.add("goto Nmenor"+temp);
 
-    c.add("Menor:");
+    c.add("Menor"+temp+":");
     c.add("sipush 1");
 
-    c.add("Nmenor:");
-
+    c.add("Nmenor"+temp+":");
   }
 }

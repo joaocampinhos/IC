@@ -19,16 +19,17 @@ public class ASTGthen implements ASTNode {
   }
 
   public void compile(CodeBlock c) {
+    c.incCounter();
+    final String temp = c.getCounter();
     left.compile(c);
     right.compile(c);
-    c.add("if_icmpgt Maior");
+    c.add("if_icmpgt Maior"+temp);
     c.add("sipush 0");
-    c.add("goto Nmaior");
+    c.add("goto Nmaior"+temp);
 
-    c.add("Maior:");
+    c.add("Maior"+temp+":");
     c.add("sipush 1");
 
-    c.add("Nmaior:");
-
+    c.add("Nmaior"+temp+":");
   }
 }

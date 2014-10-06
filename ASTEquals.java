@@ -24,16 +24,17 @@ public class ASTEquals implements ASTNode {
   }
 
   public void compile(CodeBlock c) {
+    c.incCounter();
+    final String temp = c.getCounter();
     left.compile(c);
     right.compile(c);
-    c.add("if_icmpeq Igual");
+    c.add("if_icmpeq Igual"+temp);
     c.add("sipush 0");
-    c.add("goto Dif");
+    c.add("goto Dif"+temp);
 
-    c.add("Igual:");
+    c.add("Igual"+temp+":");
     c.add("sipush 1");
 
-    c.add("Dif:");
-
+    c.add("Dif"+temp+":");
   }
 }

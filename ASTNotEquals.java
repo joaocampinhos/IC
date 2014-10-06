@@ -24,16 +24,17 @@ public class ASTNotEquals implements ASTNode {
   }
 
   public void compile(CodeBlock c) {
+    c.incCounter();
+    final String temp = c.getCounter();
     left.compile(c);
     right.compile(c);
-    c.add("if_icmpne Nigual");
+    c.add("if_icmpne Nigual"+temp);
     c.add("sipush 0");
-    c.add("goto Ndif");
+    c.add("goto Ndif"+temp);
 
-    c.add("Nigual:");
+    c.add("Nigual"+temp+":");
     c.add("sipush 1");
 
-    c.add("Ndif:");
-
+    c.add("Ndif"+temp+":");
   }
 }

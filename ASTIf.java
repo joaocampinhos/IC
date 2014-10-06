@@ -39,15 +39,16 @@ public class ASTIf implements ASTNode {
   }
 
   public void compile(CodeBlock c) {
+    c.incCounter();
+    final String temp = c.getCounter();
     exp.compile(c);
-    c.add("ifne Entra"+c.getCounter());
+    c.add("ifne Entra"+temp);
     expelse.compile(c);
-    c.add("goto Saio"+c.getCounter());
+    c.add("goto Saio"+temp);
 
-    c.add("Entra:"+c.getCounter());
+    c.add("Entra"+temp+":");
     expif.compile(c);
 
-    c.add("Saio:"+c.getCounter());
-    c.incCounter();
+    c.add("Saio"+temp+":");
   }
 }

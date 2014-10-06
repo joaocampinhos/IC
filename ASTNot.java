@@ -16,14 +16,16 @@ public class ASTNot implements ASTNode {
   }
 
   public void compile(CodeBlock c) {
+    c.incCounter();
+    final String temp = c.getCounter();
     t.compile(c);
-    c.add("ifeq Zero");
+    c.add("ifeq Zero"+temp);
     c.add("sipush 0");
-    c.add("goto Nzero");
+    c.add("goto Nzero"+temp);
 
-    c.add("Zero:");
+    c.add("Zero"+temp+":");
     c.add("sipush 1");
 
-    c.add("Nzero:");
+    c.add("Nzero"+temp+":");
   }
 }
