@@ -1,24 +1,34 @@
 PARSER_BEGIN(Parser)
 
+import java.io.*;
 
 /** ID lister. */
 public class Parser {
 
   /** Main entry point. */
-  public static void main(String args[]){
-    Parser parser = new Parser(System.in);
-    ASTNode exp;
+  public static void main(String args[]) throws IOException, ParseException, TypeError {
     CodeBlock c;
-    while (true) {
-      try {
-        c = new CodeBlock();
-        exp = parser.Start();
-        System.out.println(exp.eval());
-        exp.compile(c);
-        System.out.println(c.debug());
-      }catch(Exception e){
-        System.out.println("Syntax Error!");
-        parser.ReInit(System.in);
+    if (args.length > 0){
+      c = new CodeBlock();
+      Parser parser = new Parser(new FileInputStream(args[0]));
+      ASTNode exp = parser.Start();
+      exp.compile(c);
+      FileWriter writer = new FileWriter(new File("ctmp"), false);
+      writer.write(c.print());
+      writer.close();
+    }
+    else {
+      Parser parser = new Parser(System.in);
+      ASTNode exp;
+      while (true) {
+        try {
+          c = new CodeBlock();
+          exp = parser.Start();
+          System.out.println(exp.eval());
+        }catch(Exception e){
+          System.out.println("Syntax Error!");
+          parser.ReInit(System.in);
+        }
       }
     }
   }

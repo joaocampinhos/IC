@@ -23,14 +23,11 @@ public class CodeBlock {
     return myStack.iterator();
   }
 
-  public String debug() throws IOException {
-    FileWriter writer = new FileWriter(new File("compile/i"), false);
+  public String print() throws IOException {
     String result = "";
     for(Iterator itr = myStack.iterator();itr.hasNext();)  {
       result += itr.next()+"\n";
     }
-    writer.write(result);
-    writer.close();
     return result;
 
   }

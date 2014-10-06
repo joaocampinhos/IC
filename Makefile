@@ -1,32 +1,41 @@
-J = java
-JC = javac
+J   = java
+JC  = javac
 JCC = javacc
-DIR=Parser
-TITLE ="cenas"
+DIR = Parser
 
 default: clean javacc javac
 
-b: default run
+interpretor: default run
+i: interpretor
+
+compile: default comp
+c: compile
 
 clean:
-	rm *.class
-	@echo "Classes apagadinhas"
+	rm -f ./*.class
 
 run:
 	@echo "------------------"
-	@echo " Run              "
+	@echo " Interpretor      "
 	@echo "------------------"
-	$(J)  $(DIR)
+	$(J) $(DIR)
+
+comp:
+	@echo "------------------"
+	@echo " Compiling        "
+	@echo "------------------"
+	$(J) $(DIR) $(input) $(output)
+	cp compile/t1 compile/t1.tmp
+	sed -i s/Demo/$(output)/g compile/t1.tmp
+	cat compile/t1.tmp ctmp compile/t2 > ctmp.j
+	java -jar compile/jasmin.jar ctmp.j
+	rm ctmp ctmp.j
+	@echo "------------------"
+	@echo "run with: java $(output)"
 
 javacc:
-	@echo "------------------"
-	@echo " Javacc           "
-	@echo "------------------"
 	$(JCC) $(DIR).jj
 
 javac:
-	@echo "------------------"
-	@echo " Java             "
-	@echo "------------------"
 	$(JC) $(DIR).java
 

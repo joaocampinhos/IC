@@ -25,3 +25,5 @@ ParserTokenManager.java
 *.j
 !jasmin.jar
 i
+*.tmp
+*.bak
