@@ -6,9 +6,11 @@ import java.util.LinkedList;
 public class CodeBlock {
 
   private  Deque<String> myStack;
+  private int counter;
 
   public CodeBlock() {
     myStack= new LinkedList<String>();
+    counter = 0;
   }
 
   public void add(String instrucao){
@@ -30,5 +32,13 @@ public class CodeBlock {
     }
     return result;
 
+  }
+
+  public String getCounter(){
+    return  Integer.toString(counter);
+  }
+
+  public void incCounter(){
+    counter++;
   }
 }
