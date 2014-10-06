@@ -71,14 +71,19 @@ TOKEN :
 
 ASTNode Start():
 {
-  ASTNode t1, t2;
+  Token op = null;
+  ASTNode t;
 }
 {
-  t1 = ELog() <EL>
+  (op = <NOT>)? t = ELog() <EL>
   {
-    return t1;
+    if (op != null) return new ASTNot(t);
+    else return t;
   }
 }
+
+
+//  | <NOT> t=ELog() {return new ASTNot(t);}
 
 ASTNode ELog():
 {
@@ -193,7 +198,6 @@ ASTNode Fact() :
 {
   n=<NUM> {return new ASTNum(Integer.parseInt(n.image)); }
   | <LPAR> t=ELog() <RPAR>{return t;}
-  | <NOT> t=ELog() {return new ASTNot(t);}
   | (n=<TRUE>|n=<FALSE>) {return new ASTBool(n.image); }
   | <MINUS> n=<NUM> { return new ASTNeg(Integer.parseInt(n.image)); }
 }
