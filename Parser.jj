@@ -72,7 +72,7 @@ TOKEN :
   | < END:   "end"  >
   | < NEW:   "new"  >
   | < ATT:   ":="   >
-  | < ID: ["a"-"z","A"-"r"] (["a"-"z","a"-"z","0"-"9"])* >
+  | < ID: ["a"-"z","A"-"Z"] (["a"-"z","a"-"z","0"-"9"])* >
 }
 
 ASTNode Start():
@@ -199,7 +199,7 @@ ASTNode Fact() :
   ASTNode t;
 }
 {
-  <DECL> <ID> <END>
+  <DECL> <ID><EQ>ELog() <IN> ELog() <END>
   | n=<NUM> {return new ASTNum(Integer.parseInt(n.image)); }
   | n=<ID> {return new ASTId(n.image); }
   | <LPAR> t=ELog() <RPAR>{return t;}
