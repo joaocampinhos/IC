@@ -2,7 +2,8 @@ public interface IValue {
 
   public enum VType {
     INTEGER,
-    BOOLEAN
+    BOOLEAN,
+    ID
   }
 
   VType typeOf();

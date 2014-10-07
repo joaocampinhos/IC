@@ -56,7 +56,7 @@ TOKEN :
   | < RPAR:  ")"    >
   | < OR:    "||"   >
   | < AND:   "&&"   >
-  | < EQ:    "=="   >
+  | < EQ:    "="    >
   | < GT:    ">"    >
   | < GET:   ">="   >
   | < LT:    "<"    >
@@ -67,6 +67,12 @@ TOKEN :
   | < NOTE:  "!="   >
   | < TRUE:  "true" >
   | < FALSE: "false">
+  | < DECL:  "decl" >
+  | < IN:    "in"   >
+  | < END:   "end"  >
+  | < NEW:   "new"  >
+  | < ATT:   ":="   >
+  | < ID: ["a"-"z","A"-"r"] (["a"-"z","a"-"z","0"-"9"])* >
 }
 
 ASTNode Start():
@@ -116,7 +122,7 @@ ASTNode Ecmp():
   ASTNode t1, t2;
 }
 {
-  t1 = Ecard() ( (op = <EQ> | op = <NOTE> | op = <GT> | op = <GET> | op = <LT> | op = <LET> ) t2 = Ecard()
+  t1 = Ecard() ( (op = <EQ><EQ> | op = <NOTE> | op = <GT> | op = <GET> | op = <LT> | op = <LET> ) t2 = Ecard()
   {
     if (op.kind == EQ )
       t1 = new ASTEquals(t1,t2);
@@ -193,7 +199,9 @@ ASTNode Fact() :
   ASTNode t;
 }
 {
-  n=<NUM> {return new ASTNum(Integer.parseInt(n.image)); }
+  <DECL> <ID> <END>
+  | n=<NUM> {return new ASTNum(Integer.parseInt(n.image)); }
+  | n=<ID> {return new ASTId(n.image); }
   | <LPAR> t=ELog() <RPAR>{return t;}
   | (n=<TRUE>|n=<FALSE>) {return new ASTBool(n.image); }
   | <MINUS> n=<NUM> { return new ASTNeg(Integer.parseInt(n.image)); }
