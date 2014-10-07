@@ -82,9 +82,6 @@ ASTNode Start():
   }
 }
 
-
-//  | <NOT> t=ELog() {return new ASTNot(t);}
-
 ASTNode ELog():
 {
   ASTNode t1, t2;
