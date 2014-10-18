@@ -1,10 +1,10 @@
 public class ASTIf implements ASTNode {
   ASTNode exp, expif, expelse;
 
-  public IValue eval() throws TypeError {
-    IValue e1 = exp.eval();
-    IValue e2 = expif.eval();
-    IValue e3 = expelse.eval();
+  public IValue eval(Env e) throws TypeError {
+    IValue e1 = exp.eval(e);
+    IValue e2 = expif.eval(e);
+    IValue e3 = expelse.eval(e);
 
     if (e1.typeOf() == IValue.VType.BOOLEAN) {
       BoolValue vl = (BoolValue)e1;

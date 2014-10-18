@@ -1,9 +1,9 @@
 public class ASTOr implements ASTNode {
   ASTNode left, right;
 
-  public IValue eval() throws TypeError {
-    IValue v1 = left.eval();
-    IValue v2 = right.eval();
+  public IValue eval(Env e) throws TypeError {
+    IValue v1 = left.eval(e);
+    IValue v2 = right.eval(e);
 
     if (v1.typeOf() == IValue.VType.BOOLEAN && v2.typeOf() == IValue.VType.BOOLEAN) {
       BoolValue vl = (BoolValue)v1;

@@ -1,7 +1,7 @@
 public class ASTNeg implements ASTNode {
   int val;
 
-  public IValue eval() {
+  public IValue eval(Env e) {
     return new IntValue(-val);
   }
 

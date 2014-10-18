@@ -1,4 +1,4 @@
 public interface ASTNode {
-  IValue eval() throws TypeError;
+  IValue eval(Env e) throws TypeError;
   void compile(CodeBlock c);
 }

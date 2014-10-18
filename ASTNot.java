@@ -1,8 +1,8 @@
 public class ASTNot implements ASTNode {
   ASTNode t;
 
-  public IValue eval() throws TypeError {
-    IValue i = t.eval();
+  public IValue eval(Env e) throws TypeError {
+    IValue i = t.eval(e);
 
     if (i.typeOf() == IValue.VType.BOOLEAN) {
       BoolValue v = (BoolValue)i;

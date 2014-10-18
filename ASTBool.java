@@ -1,7 +1,7 @@
 public class ASTBool implements ASTNode {
   boolean val;
 
-  public IValue eval() {
+  public IValue eval(Env e) {
     return new BoolValue(val);
   }
 

@@ -1,4 +1,4 @@
-public class ASTAnd implements ASTNode {
+public class ASTDecl implements ASTNode {
   ASTNode left, right;
 
   public IValue eval(Env e) throws TypeError {
@@ -13,14 +13,11 @@ public class ASTAnd implements ASTNode {
     else throw new TypeError();
   }
 
-  public ASTAnd(ASTNode l, ASTNode r) {
+  public ASTDecl(ASTNode l, ASTNode r) {
     left = l;
     right = r;
   }
 
   public void compile(CodeBlock c) {
-    left.compile(c);
-    right.compile(c);
-    c.add("iand");
   }
 }

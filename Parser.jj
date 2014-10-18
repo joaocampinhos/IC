@@ -1,6 +1,7 @@
 PARSER_BEGIN(Parser)
 
 import java.io.*;
+import java.util.*;
 
 /** ID lister. */
 public class Parser {
@@ -22,9 +23,8 @@ public class Parser {
       ASTNode exp;
       while (true) {
         try {
-          c = new CodeBlock();
           exp = parser.Start();
-          System.out.println(exp.eval());
+          System.out.println(exp.eval(new Env()));
         }catch(Exception e){
           System.out.println("Syntax Error!");
           parser.ReInit(System.in);
@@ -42,6 +42,7 @@ SKIP :
   " "
   | "\t"
   | "\r"
+  | "\n"
 }
 
 TOKEN :
@@ -51,7 +52,6 @@ TOKEN :
   | < MINUS: "-"    >
   | < TIMES: "*"    >
   | < DIV:   "/"    >
-  | < EL:    "\n"   >
   | < LPAR:  "("    >
   | < RPAR:  ")"    >
   | < OR:    "||"   >
@@ -73,6 +73,7 @@ TOKEN :
   | < NEW:   "new"  >
   | < ATT:   ":="   >
   | < ID: ["a"-"z","A"-"Z"] (["a"-"z","a"-"z","0"-"9"])* >
+  | < EL:    ";;\n"   >
 }
 
 ASTNode Start():
@@ -196,12 +197,15 @@ ASTNode Term():
 ASTNode Fact() :
 {
   Token n;
-  ASTNode t;
+  ASTNode t, e;
+  Vector<Binding> ve;
 }
 {
-  <DECL> <ID><EQ>ELog() <IN> ELog() <END>
-  | n=<NUM> {return new ASTNum(Integer.parseInt(n.image)); }
+  n=<NUM> {return new ASTNum(Integer.parseInt(n.image)); }
   | n=<ID> {return new ASTId(n.image); }
+  | <DECL> {ve = new Vector<Binding>();}
+    n=<ID><EQ>t=ELog() {ve.addElement(new Binding(n.image, t));}
+    <IN> e=ELog() <END> {return new ASTDecl(t,e);}
   | <LPAR> t=ELog() <RPAR>{return t;}
   | (n=<TRUE>|n=<FALSE>) {return new ASTBool(n.image); }
   | <MINUS> n=<NUM> { return new ASTNeg(Integer.parseInt(n.image)); }

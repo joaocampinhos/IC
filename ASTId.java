@@ -1,7 +1,7 @@
 public class ASTId implements ASTNode {
   String val;
 
-  public IValue eval() {
+  public IValue eval(Env e) {
     return new IdValue(val);
   }
 
