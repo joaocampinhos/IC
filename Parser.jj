@@ -72,7 +72,7 @@ TOKEN :
   | < END:   "end"  >
   | < NEW:   "new"  >
   | < ATT:   ":="   >
-  | < ID: ["a"-"z","A"-"Z"] (["a"-"z","a"-"z","0"-"9"])* >
+  | < ID: ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","0"-"9"])* >
   | < EL:    ";;\n"   >
 }
 
@@ -203,9 +203,11 @@ ASTNode Fact() :
 {
   n=<NUM> {return new ASTNum(Integer.parseInt(n.image)); }
   | n=<ID> {return new ASTId(n.image); }
-  | <DECL> {ve = new Vector<Binding>();}
-    n=<ID><EQ>t=ELog() {ve.addElement(new Binding(n.image, t));}
-    <IN> e=ELog() <END> {return new ASTDecl(t,e);}
+  | <DECL>   { ve = new Vector<Binding>(); }
+             ( n=<ID> <EQ> t=Exp()
+             { ve.addElement(new Binding(n.image, t)); }
+             )+
+    <IN> e=Exp() <END> { return new ASTDecl(ve,e); }
   | <LPAR> t=ELog() <RPAR>{return t;}
   | (n=<TRUE>|n=<FALSE>) {return new ASTBool(n.image); }
   | <MINUS> n=<NUM> { return new ASTNeg(Integer.parseInt(n.image)); }

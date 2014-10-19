@@ -14,7 +14,7 @@ public class Binding  {
     return id;
   }
 
-  ASTNode getExpr() 
+  ASTNode getExp() 
   {
     return expr;
   }

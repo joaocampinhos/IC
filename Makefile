@@ -37,5 +37,5 @@ javacc:
 	$(JCC) $(DIR).jj
 
 javac:
-	$(JC) $(DIR).java
+	$(JC) *.java
 
