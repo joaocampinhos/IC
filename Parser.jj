@@ -41,13 +41,18 @@ SKIP :
 {
   " "
   | "\t"
-  | "\r"
   | "\n"
 }
 
 TOKEN :
 {
-  < NUM: ["1"-"9"] (["0"-"9"])* >
+  < DECL:    "decl" >
+  | < IN:    "in"   >
+  | < END:   "end"  >
+  | < TRUE:  "true" >
+  | < FALSE: "false">
+  | < ID:    ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","0"-"9"])* >
+  | < NUM:   (["0"-"9"])+ >
   | < PLUS : "+"    >
   | < MINUS: "-"    >
   | < TIMES: "*"    >
@@ -65,15 +70,7 @@ TOKEN :
   | < ELSE:  ":"    >
   | < NOT:   "!"    >
   | < NOTE:  "!="   >
-  | < TRUE:  "true" >
-  | < FALSE: "false">
-  | < DECL:  "decl" >
-  | < IN:    "in"   >
-  | < END:   "end"  >
-  | < NEW:   "new"  >
-  | < ATT:   ":="   >
-  | < ID: ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","0"-"9"])* >
-  | < EL:    ";;\n"   >
+  | < EL:    ";;\n" >
 }
 
 ASTNode Start():
@@ -201,16 +198,15 @@ ASTNode Fact() :
   Vector<Binding> ve;
 }
 {
-  n=<NUM> {return new ASTNum(Integer.parseInt(n.image)); }
-  | n=<ID> {return new ASTId(n.image); }
+  (n=<NUM> {t= new ASTNum(Integer.parseInt(n.image)); }
+  | n=<ID> {t= new ASTId(n.image); }
   | <DECL>   { ve = new Vector<Binding>(); }
-             ( n=<ID> <EQ> t=Exp()
+             ( n=<ID> <EQ> t=ELog()
              { ve.addElement(new Binding(n.image, t)); }
              )+
-    <IN> e=Exp() <END> { return new ASTDecl(ve,e); }
-  | <LPAR> t=ELog() <RPAR>{return t;}
-  | (n=<TRUE>|n=<FALSE>) {return new ASTBool(n.image); }
-  | <MINUS> n=<NUM> { return new ASTNeg(Integer.parseInt(n.image)); }
+    <IN> e=ELog() <END> { t = new ASTDecl(ve,e); }
+  | <LPAR> t=ELog() <RPAR>
+  | (n=<TRUE>|n=<FALSE>) {t = new ASTBool(n.image); }
+  | <MINUS> n=<NUM> { t= new ASTNeg(Integer.parseInt(n.image)); })
+  {return t;}
 }
-
-
