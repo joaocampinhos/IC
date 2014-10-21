@@ -5,7 +5,7 @@ public class ASTDecl implements ASTNode {
   IValue v;
   Vector<Binding> ve;
 
-  public IValue eval(Env e) throws TypeError {
+  public IValue eval(Env e) throws TypeError, Env.IdentifierDeclaredTwice, Env.UndeclaredIdentifier {
     Iterator<Binding> it = ve.iterator();
     e.beginScope();
     while (it.hasNext()) {

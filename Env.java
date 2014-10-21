@@ -19,7 +19,7 @@ public class Env {
       return id;
     }
 
-    IValue getVal
+    IValue getValue()
     {
       return v;
     }

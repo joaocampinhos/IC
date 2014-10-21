@@ -51,6 +51,9 @@ TOKEN :
   | < END:   "end"  >
   | < TRUE:  "true" >
   | < FALSE: "false">
+  | < IF:    "if"   >
+  | < THEN:  "then" >
+  | < ELSE:  "else" >
   | < ID:    ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","0"-"9"])* >
   | < NUM:   (["0"-"9"])+ >
   | < PLUS : "+"    >
@@ -66,8 +69,8 @@ TOKEN :
   | < GET:   ">="   >
   | < LT:    "<"    >
   | < LET:   "<="   >
-  | < IF:    "?"    >
-  | < ELSE:  ":"    >
+  | < IFC:   "?"    >
+  | < ELSEC: ":"    >
   | < NOT:   "!"    >
   | < NOTE:  "!="   >
   | < EL:    ";;\n" >
@@ -142,16 +145,12 @@ ASTNode Ecmp():
 
 ASTNode Ecard():
 {
+  Token op;
   ASTNode t1, t2, t3;
 }
 {
-  t1 = Exp() ( <IF> t2 = Exp() <ELSE> t3 = Exp()
-  {
-    t1 = new ASTIf(t1,t2,t3);
-  })?
-  {
-    return t1;
-  }
+  t1 = Exp() ( <IFC> t2 = Exp() <ELSEC> t3 = Exp() { t1 = new ASTIf(t1,t2,t3); })? {return t1;}
+  | <IF> t1=Exp() <THEN> t2=Exp() <ELSE> t3=Exp() { return new ASTIf(t1,t2,t3); }
 }
 
 ASTNode Exp():
