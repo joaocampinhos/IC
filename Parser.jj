@@ -47,6 +47,7 @@ SKIP :
 TOKEN :
 {
   < DECL:    "decl" >
+  | < NEW:   "new"  >
   | < IN:    "in"   >
   | < END:   "end"  >
   | < TRUE:  "true" >
@@ -64,13 +65,13 @@ TOKEN :
   | < RPAR:  ")"    >
   | < OR:    "||"   >
   | < AND:   "&&"   >
+  | < COL:   ":"    >
   | < EQ:    "="    >
   | < GT:    ">"    >
   | < GET:   ">="   >
   | < LT:    "<"    >
   | < LET:   "<="   >
   | < IFC:   "?"    >
-  | < ELSEC: ":"    >
   | < NOT:   "!"    >
   | < NOTE:  "!="   >
   | < EL:    ";;\n" >
@@ -149,7 +150,7 @@ ASTNode Ecard():
   ASTNode t1, t2, t3;
 }
 {
-  t1 = Exp() ( <IFC> t2 = Exp() <ELSEC> t3 = Exp() { t1 = new ASTIf(t1,t2,t3); })? {return t1;}
+  t1 = Exp() ( <IFC> t2 = Exp() <COL> t3 = Exp() { t1 = new ASTIf(t1,t2,t3); })? {return t1;}
   | <IF> t1=Exp() <THEN> t2=Exp() <ELSE> t3=Exp() { return new ASTIf(t1,t2,t3); }
 }
 
@@ -177,7 +178,7 @@ ASTNode Term():
   ASTNode t1, t2;
 }
 {
-  t1 = Fact() ( ( op = <TIMES> | op = <DIV> ) t2 = Fact()
+  t1 = Eref() ( ( op = <TIMES> | op = <DIV> ) t2 = Eref()
   {
     if (op.kind == TIMES)
       t1 = new ASTMul(t1,t2);
@@ -188,6 +189,36 @@ ASTNode Term():
     return t1;
   }
 
+}
+
+ASTNode Eref():
+{
+  Token op = null;
+  ASTNode t1;
+}
+{
+  (op=<NEW>)? t1=Assi()
+  {
+    if (op!=null)
+      t1= new ASTNew(t1);
+  }
+  {
+    return t1;
+  }
+}
+
+ASTNode Assi():
+{
+  ASTNode t1, t2;
+}
+{
+  t1=Fact() (<COL><EQ> t2=Fact()
+  {
+    t1 = new ASTAssi(t1, t2);
+  })?
+  {
+    return t1;
+  }
 }
 
 ASTNode Fact() :
