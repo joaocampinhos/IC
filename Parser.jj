@@ -85,24 +85,23 @@ ASTNode Start():
   ASTNode t;
 }
 {
-  t = ENeg() <EL>
+  t = EMu() <EL>
   {
     return t;
   }
 }
 
-ASTNode ENeg():
+ASTNode EMu():
 {
-  Token op = null;
-  ASTNode t;
+  ASTNode t1, t2;
 }
 {
-  (op = <NOT>)? t = ELog()
+  t1 = ELog() ( <SEMI> t2 = ELog()
   {
-    if (op != null) t=  new ASTNot(t);
-  }
+    t1 = new ASTMultiple(t1,t2);
+  })*
   {
-    return t;
+    return t1;
   }
 }
 
@@ -176,14 +175,12 @@ ASTNode Exp():
   ASTNode t1, t2;
 }
 {
-  t1 = Term() ( ( op = <PLUS> | op = <MINUS> | op = <SEMI>) t2 = Term()
+  t1 = Term() ( ( op = <PLUS> | op = <MINUS> ) t2 = Term()
   {
     if (op.kind == PLUS)
       t1 = new ASTPlus(t1,t2);
-    else if (op.kind == MINUS)
-      t1 = new ASTSub(t1,t2);
     else
-      t1 = new ASTMultiple(t1,t2);
+      t1 = new ASTSub(t1,t2);
   })*
   {
     return t1;
@@ -206,7 +203,6 @@ ASTNode Term():
   {
     return t1;
   }
-
 }
 
 ASTNode Eref():
@@ -215,10 +211,13 @@ ASTNode Eref():
   ASTNode t1;
 }
 {
-  (op=<NEW>)? t1=Assi()
+  (op=<NEW> | op=<NOT>)? t1=Assi()
   {
     if (op!=null)
-      t1= new ASTNew(t1);
+      if(op.kind == NEW)
+        t1= new ASTNew(t1);
+      else if(op.kind==NOT)
+        t1= new ASTNot(t1);
   }
   {
     return t1;
@@ -249,11 +248,11 @@ ASTNode Fact() :
   (n=<NUM> {t= new ASTNum(Integer.parseInt(n.image)); }
   | n=<ID> {t= new ASTId(n.image); }
   | <DECL>   { ve = new Vector<Binding>(); }
-             ( n=<ID> <EQ> t=ENeg()
+             ( n=<ID> <EQ> t=EMu()
              { ve.addElement(new Binding(n.image, t)); }
              )+
-    <IN> e=ENeg() <END> { t = new ASTDecl(ve,e); }
-  | (n=<PRNT> | n=<PRNTLN>)? <LPAR> t=ENeg() <RPAR> {if (n.kind==PRNT) t= new ASTPrint(t); else if (n.kind==PRNTLN) t = new ASTPrintln(t);}
+    <IN> e=EMu() <END> { t = new ASTDecl(ve,e); }
+  | (n=<PRNT> | n=<PRNTLN>)? <LPAR> t=EMu() <RPAR> {if (n.kind==PRNT) t= new ASTPrint(t); else if (n.kind==PRNTLN) t = new ASTPrintln(t);}
   | (n=<TRUE>|n=<FALSE>) {t = new ASTBool(n.image); }
   | <MINUS> n=<NUM> { t= new ASTNeg(Integer.parseInt(n.image)); })
   {return t;}
