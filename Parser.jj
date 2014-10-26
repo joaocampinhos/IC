@@ -55,6 +55,8 @@ TOKEN :
   | < IF:    "if"   >
   | < THEN:  "then" >
   | < ELSE:  "else" >
+  | < PRNT:  "print">
+  | < PRNTLN:"println">
   | < ID:    ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","0"-"9"])* >
   | < NUM:   (["0"-"9"])+ >
   | < PLUS : "+"    >
@@ -223,7 +225,7 @@ ASTNode Assi():
 
 ASTNode Fact() :
 {
-  Token n;
+  Token n=null;
   ASTNode t, e;
   Vector<Binding> ve;
 }
@@ -235,7 +237,7 @@ ASTNode Fact() :
              { ve.addElement(new Binding(n.image, t)); }
              )+
     <IN> e=ELog() <END> { t = new ASTDecl(ve,e); }
-  | <LPAR> t=ELog() <RPAR>
+  | (n=<PRNT> | n=<PRNTLN>)? <LPAR> t=ELog() <RPAR> {if (n.kind==PRNT) t= new ASTPrint(t); else if (n.kind==PRNTLN) t = new ASTPrintln(t);}
   | (n=<TRUE>|n=<FALSE>) {t = new ASTBool(n.image); }
   | <MINUS> n=<NUM> { t= new ASTNeg(Integer.parseInt(n.image)); })
   {return t;}
