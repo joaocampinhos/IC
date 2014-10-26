@@ -232,7 +232,7 @@ ASTNode Assi():
   t1=Fact() (<COL><EQ> t2=Fact()
   {
     t1 = new ASTAssi(t1, t2);
-  })?
+  })*
   {
     return t1;
   }
@@ -252,7 +252,8 @@ ASTNode Fact() :
              { ve.addElement(new Binding(n.image, t)); }
              )+
     <IN> e=EMu() <END> { t = new ASTDecl(ve,e); }
-  | (n=<PRNT> | n=<PRNTLN>)? <LPAR> t=EMu() <RPAR> {if (n.kind==PRNT) t= new ASTPrint(t); else if (n.kind==PRNTLN) t = new ASTPrintln(t);}
+  | (n=<PRNT> | n=<PRNTLN>) <LPAR> t=EMu() <RPAR> {if (n.kind==PRNT) t= new ASTPrint(t); else if (n.kind==PRNTLN) t = new ASTPrintln(t);}
+  | <LPAR> t=EMu() <RPAR>
   | (n=<TRUE>|n=<FALSE>) {t = new ASTBool(n.image); }
   | <MINUS> n=<NUM> { t= new ASTNeg(Integer.parseInt(n.image)); })
   {return t;}
