@@ -8,6 +8,10 @@ public class ASTNot implements ASTNode {
       BoolValue v = (BoolValue)i;
       return new BoolValue(!v.getVal());
     }
+    else if (i.typeOf() == IValue.VType.REFERENCE) {
+      RefValue v = (RefValue)i;
+      return v.getVal();
+    }
     else throw new TypeError();
   }
 

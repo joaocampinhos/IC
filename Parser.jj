@@ -59,6 +59,7 @@ TOKEN :
   | < PRNTLN:"println">
   | < ID:    ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","0"-"9"])* >
   | < NUM:   (["0"-"9"])+ >
+  | < SEMI : ";"    >
   | < PLUS : "+"    >
   | < MINUS: "-"    >
   | < TIMES: "*"    >
@@ -81,14 +82,27 @@ TOKEN :
 
 ASTNode Start():
 {
+  ASTNode t;
+}
+{
+  t = ENeg() <EL>
+  {
+    return t;
+  }
+}
+
+ASTNode ENeg():
+{
   Token op = null;
   ASTNode t;
 }
 {
-  (op = <NOT>)? t = ELog() <EL>
+  (op = <NOT>)? t = ELog()
   {
-    if (op != null) return new ASTNot(t);
-    else return t;
+    if (op != null) t=  new ASTNot(t);
+  }
+  {
+    return t;
   }
 }
 
@@ -162,12 +176,14 @@ ASTNode Exp():
   ASTNode t1, t2;
 }
 {
-  t1 = Term() ( ( op = <PLUS> | op = <MINUS> ) t2 = Term()
+  t1 = Term() ( ( op = <PLUS> | op = <MINUS> | op = <SEMI>) t2 = Term()
   {
     if (op.kind == PLUS)
       t1 = new ASTPlus(t1,t2);
-    else
+    else if (op.kind == MINUS)
       t1 = new ASTSub(t1,t2);
+    else
+      t1 = new ASTMultiple(t1,t2);
   })*
   {
     return t1;
@@ -233,11 +249,11 @@ ASTNode Fact() :
   (n=<NUM> {t= new ASTNum(Integer.parseInt(n.image)); }
   | n=<ID> {t= new ASTId(n.image); }
   | <DECL>   { ve = new Vector<Binding>(); }
-             ( n=<ID> <EQ> t=ELog()
+             ( n=<ID> <EQ> t=ENeg()
              { ve.addElement(new Binding(n.image, t)); }
              )+
-    <IN> e=ELog() <END> { t = new ASTDecl(ve,e); }
-  | (n=<PRNT> | n=<PRNTLN>)? <LPAR> t=ELog() <RPAR> {if (n.kind==PRNT) t= new ASTPrint(t); else if (n.kind==PRNTLN) t = new ASTPrintln(t);}
+    <IN> e=ENeg() <END> { t = new ASTDecl(ve,e); }
+  | (n=<PRNT> | n=<PRNTLN>)? <LPAR> t=ENeg() <RPAR> {if (n.kind==PRNT) t= new ASTPrint(t); else if (n.kind==PRNTLN) t = new ASTPrintln(t);}
   | (n=<TRUE>|n=<FALSE>) {t = new ASTBool(n.image); }
   | <MINUS> n=<NUM> { t= new ASTNeg(Integer.parseInt(n.image)); })
   {return t;}
