@@ -167,6 +167,7 @@ ASTNode Ecard():
 {
   t1 = Exp() ( <IFC> t2 = Exp() <COL> t3 = Exp() { t1 = new ASTIf(t1,t2,t3); })? {return t1;}
   | <IF> t1=Exp() <THEN> t2=Exp() <ELSE> t3=Exp() { return new ASTIf(t1,t2,t3); }
+  | <WHILE> t1=Exp() <DO> t2=Exp() <END> { return new ASTWhile(t1,t2); }
 }
 
 ASTNode Exp():
