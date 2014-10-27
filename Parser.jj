@@ -25,30 +25,26 @@ public class Parser {
         try {
           exp = parser.Start();
           System.out.println(exp.eval(new Env()));
-        }/*catch(Exception e){
-          System.out.println("Syntax Error!");
-          parser.ReInit(System.in);
-        }*/
+        }
         catch (Env.UndeclaredIdentifier e) {
-      System.out.println ("Undeclared id.");
-      parser.ReInit(System.in);
-    } 
-      catch (Env.IdentifierDeclaredTwice e) {
-      System.out.println ("Id declared twice.");
-      parser.ReInit(System.in);
-    } 
-      catch (TypeError e) {
-      System.out.println ("Unexpected operand type.!");
-      parser.ReInit(System.in);
-    }
-      catch (ParseException e) {
-      System.out.println ("Syntax error.");
-      parser.ReInit(System.in);
-    }
+          System.out.println ("Undeclared id.");
+          parser.ReInit(System.in);
+        }
+        catch (Env.IdentifierDeclaredTwice e) {
+          System.out.println ("Id declared twice.");
+          parser.ReInit(System.in);
+        }
+        catch (TypeError e) {
+          System.out.println ("Unexpected operand type.!");
+          parser.ReInit(System.in);
+        }
+        catch (ParseException e) {
+          System.out.println ("Syntax error.");
+          parser.ReInit(System.in);
+        }
       }
     }
   }
-
 }
 
 PARSER_END(Parser)
@@ -114,10 +110,24 @@ ASTNode EMu():
   ASTNode t1, t2;
 }
 {
-  t1 = ELog() ( <SEMI> t2 = ELog()
+  t1 = Assi() ( <SEMI> t2 = Assi()
   {
     t1 = new ASTMultiple(t1,t2);
-  })?
+  })*
+  {
+    return t1;
+  }
+}
+
+ASTNode Assi():
+{
+  ASTNode t1, t2;
+}
+{
+  t1=ELog() (<COL><EQ> t2=ELog()
+  {
+    t1 = new ASTAssi(t1, t2);
+  })*
   {
     return t1;
   }
@@ -183,9 +193,9 @@ ASTNode Ecard():
   ASTNode t1, t2, t3;
 }
 {
-  t1 = Exp() ( <IFC> t2 = Exp() <COL> t3 = Exp() { t1 = new ASTIf(t1,t2,t3); })? {return t1;}
-  | <IF> t1=Exp() <THEN> t2=Exp() <ELSE> t3=Exp() { return new ASTIf(t1,t2,t3); }
+  <IF> t1=Exp() <THEN> t2=Exp() <ELSE> t3=Exp() { return new ASTIf(t1,t2,t3); }
   | <WHILE> t1=Exp() <DO> t2=Exp() <END> { return new ASTWhile(t1,t2); }
+  | t1 = Exp() {return t1;}
 }
 
 ASTNode Exp():
@@ -230,7 +240,7 @@ ASTNode Eref():
   ASTNode t1;
 }
 {
-  (op=<NEW> | op=<NOT>)? t1=Assi()
+  (op=<NEW> | op=<NOT>)? t1=Fact()
   {
     if (op!=null)
       if(op.kind == NEW)
@@ -238,20 +248,6 @@ ASTNode Eref():
       else if(op.kind==NOT)
         t1= new ASTNot(t1);
   }
-  {
-    return t1;
-  }
-}
-
-ASTNode Assi():
-{
-  ASTNode t1, t2;
-}
-{
-  t1=Fact() (<COL><EQ> t2=Fact()
-  {
-    t1 = new ASTAssi(t1, t2);
-  })*
   {
     return t1;
   }
@@ -271,7 +267,8 @@ ASTNode Fact() :
              { ve.addElement(new Binding(n.image, t)); }
              )+
     <IN> e=EMu() <END> { t = new ASTDecl(ve,e); }
-  | (n=<PRNT> | n=<PRNTLN>) <LPAR> t=EMu() <RPAR> {if (n.kind==PRNT) t= new ASTPrint(t); else if (n.kind==PRNTLN) t = new ASTPrintln(t);}
+  | <PRNTLN> t=EMu() {t = new ASTPrintln(t);}
+  | <PRNT> t=EMu() {t = new ASTPrint(t);}
   | <LPAR> t=EMu() <RPAR>
   | (n=<TRUE>|n=<FALSE>) {t = new ASTBool(n.image); }
   | <MINUS> n=<NUM> { t= new ASTNeg(Integer.parseInt(n.image)); })
