@@ -7,10 +7,10 @@ public class ASTWhile implements ASTNode {
 
     if (v1.typeOf() == IValue.VType.BOOLEAN) {
       BoolValue vl = (BoolValue)v1;
-      while (vl) {
-        IValue v2 = right.eval(e);
-        IValue v1 = left.eval(e);
-        BoolValue vl = (BoolValue)v1;
+      while (vl.getVal()) {
+        v2 = right.eval(e);
+        v1 = left.eval(e);
+        vl = (BoolValue)v1;
       }
       return v2;
     }

@@ -47,6 +47,8 @@ SKIP :
 TOKEN :
 {
   < DECL:    "decl" >
+  | < WHILE: "while">
+  | < DO:    "do"   >
   | < NEW:   "new"  >
   | < IN:    "in"   >
   | < END:   "end"  >
