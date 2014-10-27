@@ -197,7 +197,7 @@ ASTNode Ecard():
 }
 {
   <IF> t1=Exp() <THEN> t2=Exp() <ELSE> t3=Exp() { return new ASTIf(t1,t2,t3); }
-  | <WHILE> <LPAR>t1=Exp()<RPAR> <DO> t2=EMu() <END> { return new ASTWhile(t1,t2); }
+  | <WHILE> <LPAR>t1=ELog()<RPAR> <DO> t2=EMu() <END> { return new ASTWhile(t1,t2); }
   | t1 = Exp() {return t1;}
 }
 
@@ -225,7 +225,7 @@ ASTNode Term():
   ASTNode t1, t2;
 }
 {
-  t1 = Deref() ( ( op = <TIMES> | op = <DIV> ) t2 = Deref()
+  t1 = Print() ( ( op = <TIMES> | op = <DIV> ) t2 = Print()
   {
     if (op.kind == TIMES)
       t1 = new ASTMul(t1,t2);
@@ -237,21 +237,7 @@ ASTNode Term():
   }
 }
 
-ASTNode Deref():
-{
-  Token op = null;
-  ASTNode t1;
-}
-{
-  (op=<DEREF>)? t1=Print()
-  {
-    if (op!=null)
-        t1= new ASTDeref(t1);
-  }
-  {
-    return t1;
-  }
-}
+
 
 ASTNode Print():
 {
@@ -259,9 +245,25 @@ ASTNode Print():
  ASTNode t;
 }
 {
-  (op=<PRNTLN> | op=<PRNT>)? t=Eref() {if (op!=null)t = new ASTPrintln(t);}
+  (op=<PRNTLN> | op=<PRNT>)? t=Deref() {if (op!=null)t = new ASTPrintln(t);}
   {
     return t;
+  }
+}
+
+ASTNode Deref():
+{
+  Token op = null;
+  ASTNode t1;
+}
+{
+  (op=<DEREF>)? t1=Eref()
+  {
+    if (op!=null)
+        t1= new ASTDeref(t1);
+  }
+  {
+    return t1;
   }
 }
 
