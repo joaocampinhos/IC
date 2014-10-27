@@ -24,7 +24,7 @@ public class Parser {
       while (true) {
         try {
           exp = parser.Start();
-          System.out.println(exp.eval(new Env()));
+          System.out.println("-> "+exp.eval(new Env()));
         }
         catch (Env.UndeclaredIdentifier e) {
           System.out.println ("Undeclared id.");
@@ -89,7 +89,8 @@ TOKEN :
   | < LT:    "<"    >
   | < LET:   "<="   >
   | < IFC:   "?"    >
-  | < NOT:   "!"    >
+  | < DEREF: "!"    >
+  | < NOT:   "~"    >
   | < NOTE:  "!="   >
   | < EL:    ";;\n" >
 }
@@ -152,10 +153,26 @@ ASTNode TLog():
   ASTNode t1, t2;
 }
 {
-  t1 = Ecmp() ( <OR> t2 = Ecmp()
+  t1 = Deref() ( <OR> t2 = Deref()
   {
     t1 = new ASTOr(t1, t2);
   })*
+  {
+    return t1;
+  }
+}
+
+ASTNode Deref():
+{
+  Token op = null;
+  ASTNode t1;
+}
+{
+  (op=<DEREF>)? t1=Ecmp()
+  {
+    if (op!=null)
+        t1= new ASTDeref(t1);
+  }
   {
     return t1;
   }
@@ -194,7 +211,7 @@ ASTNode Ecard():
 }
 {
   <IF> t1=Exp() <THEN> t2=Exp() <ELSE> t3=Exp() { return new ASTIf(t1,t2,t3); }
-  | <WHILE> t1=Exp() <DO> t2=Exp() <END> { return new ASTWhile(t1,t2); }
+  | <WHILE> <LPAR>t1=Exp()<RPAR> <DO> t2=EMu() <END> { return new ASTWhile(t1,t2); }
   | t1 = Exp() {return t1;}
 }
 
@@ -222,7 +239,7 @@ ASTNode Term():
   ASTNode t1, t2;
 }
 {
-  t1 = Eref() ( ( op = <TIMES> | op = <DIV> ) t2 = Eref()
+  t1 = Print() ( ( op = <TIMES> | op = <DIV> ) t2 = Print()
   {
     if (op.kind == TIMES)
       t1 = new ASTMul(t1,t2);
@@ -231,6 +248,18 @@ ASTNode Term():
    })*
   {
     return t1;
+  }
+}
+
+ASTNode Print():
+{
+ Token op=null;
+ ASTNode t;
+}
+{
+  (op=<PRNTLN> | op=<PRNT>)? t=Eref() {if (op!=null)t = new ASTPrintln(t);}
+  {
+    return t;
   }
 }
 
@@ -267,8 +296,6 @@ ASTNode Fact() :
              { ve.addElement(new Binding(n.image, t)); }
              )+
     <IN> e=EMu() <END> { t = new ASTDecl(ve,e); }
-  | <PRNTLN> t=EMu() {t = new ASTPrintln(t);}
-  | <PRNT> t=EMu() {t = new ASTPrint(t);}
   | <LPAR> t=EMu() <RPAR>
   | (n=<TRUE>|n=<FALSE>) {t = new ASTBool(n.image); }
   | <MINUS> n=<NUM> { t= new ASTNeg(Integer.parseInt(n.image)); })

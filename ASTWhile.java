@@ -5,6 +5,9 @@ public class ASTWhile implements ASTNode {
     IValue v1 = left.eval(e);
     IValue v2 = right.eval(e);
 
+    System.out.println(v1);
+    System.out.println(v2);
+
     if (v1.typeOf() == IValue.VType.BOOLEAN) {
       BoolValue vl = (BoolValue)v1;
       while (vl.getVal()) {
