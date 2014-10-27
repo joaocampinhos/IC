@@ -7,7 +7,7 @@ public class ASTAssi implements ASTNode {
     if (tmp1.typeOf() == IValue.VType.REFERENCE) {
       RefValue a = (RefValue)tmp1;
       a.setVal(tmp2);
-      return a;
+      return tmp2;
     }
     else throw new TypeError();
   }

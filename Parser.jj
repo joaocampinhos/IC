@@ -25,10 +25,26 @@ public class Parser {
         try {
           exp = parser.Start();
           System.out.println(exp.eval(new Env()));
-        }catch(Exception e){
+        }/*catch(Exception e){
           System.out.println("Syntax Error!");
           parser.ReInit(System.in);
-        }
+        }*/
+        catch (Env.UndeclaredIdentifier e) {
+      System.out.println ("Undeclared id.");
+      parser.ReInit(System.in);
+    } 
+      catch (Env.IdentifierDeclaredTwice e) {
+      System.out.println ("Id declared twice.");
+      parser.ReInit(System.in);
+    } 
+      catch (TypeError e) {
+      System.out.println ("Unexpected operand type.!");
+      parser.ReInit(System.in);
+    }
+      catch (ParseException e) {
+      System.out.println ("Syntax error.");
+      parser.ReInit(System.in);
+    }
       }
     }
   }
@@ -101,7 +117,7 @@ ASTNode EMu():
   t1 = ELog() ( <SEMI> t2 = ELog()
   {
     t1 = new ASTMultiple(t1,t2);
-  })*
+  })?
   {
     return t1;
   }
