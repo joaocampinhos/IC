@@ -4,7 +4,8 @@ public interface IValue {
     INTEGER,
     BOOLEAN,
     ID,
-    REFERENCE
+    REFERENCE,
+    FUN
   }
 
   VType typeOf();
