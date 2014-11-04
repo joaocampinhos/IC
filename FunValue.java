@@ -1,10 +1,12 @@
 public class FunValue implements IValue {
 
-  Vector<String> vs;
+  Vector<ASTId> vs;
+  ASTNode body;
   
 
-  IdValue(String v) {
-    val = v;
+  FunValue(Vector<ASTId> vec, ASTNode b) {
+    vs = vec;
+    body = b;
   }
 
   public VType typeOf() {
@@ -12,7 +14,16 @@ public class FunValue implements IValue {
   }
 
   public String toString() {
-    return val;
+    return body.toString();
   }
+
+  public Vector<ASTId> getParameter(){
+    return vs;
+  };
+
+  public ASTNode getBody(){
+    return body;
+  };
+
 
 }

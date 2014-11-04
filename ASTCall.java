@@ -1,15 +1,17 @@
 import java.util.*;
 
-public class ASTFun implements ASTNode {
+public class ASTCall implements ASTNode {
   Vector<ASTId> vs;
   ASTNode body;
 
   public IValue eval(Env e) throws TypeError, Env.IdentifierDeclaredTwice, Env.UndeclaredIdentifier {
-    FunValue f = new FunValue(vs, body);  
-    return f;
+    
+
+    e.beginScope();
+
   }
 
-  public ASTFun(Vector<ASTId> vec, ASTNode b) {
+  public ASTCall(Vector<ASTId> vec, ASTNode b) {
     vs = vec;
     body  = b;
   }
