@@ -7,13 +7,13 @@ public class ASTDecl implements ASTNode {
 
   public IValue eval(Env e) throws TypeError, Env.IdentifierDeclaredTwice, Env.UndeclaredIdentifier {
     Iterator<Binding> it = ve.iterator();
-    e.beginScope();
+    Env en = e.beginScope();
     while (it.hasNext()) {
       Binding a = it.next();
       e.assoc(a.getId(), a.getExp().eval(e));
     }
-    v = t.eval(e);
-    e.endScope();
+    v = t.eval(en);
+    en.endScope();
     return v;
   }
 
