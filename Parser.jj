@@ -305,10 +305,12 @@ ASTNode Fact() :
     <IN> e=EMu() <END> { t = new ASTDecl(ve,e); }
   | <LPAR> t=EMu() <RPAR>
   | (n=<TRUE>|n=<FALSE>) {t = new ASTBool(n.image); }
-  | <MINUS> n=<NUM> { t= new ASTNeg(Integer.parseInt(n.image)); })
-  | <FUN> {vs = new Vector<String>();} 
-          ((n=<ID>{vs.addElement(n.image);})
-          (<COMM>n=<ID>{vs.addElement(n.image);})*)? 
-          <EQ><GT> e=EMu() <END> {t = new ASTFun(vs, e)}
+  | <MINUS> n=<NUM> { t= new ASTNeg(Integer.parseInt(n.image)); }
+  | <FUN> {vs = new Vector<String>();}
+          (
+            (n=<ID>{vs.addElement(n.image);})
+            (<COMM>n=<ID>{vs.addElement(n.image);})*
+          )?
+          <EQ><GT> e=EMu() <END> {t = new ASTFun(vs, e);})
   {return t;}
 }

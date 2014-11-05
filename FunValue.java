@@ -1,10 +1,12 @@
+import java.util.*;
+
 public class FunValue implements IValue {
 
-  Vector<ASTId> vs;
+  Vector<String> vs;
   ASTNode body;
-  
 
-  FunValue(Vector<ASTId> vec, ASTNode b) {
+
+  FunValue(Vector<String> vec, ASTNode b) {
     vs = vec;
     body = b;
   }
@@ -17,7 +19,7 @@ public class FunValue implements IValue {
     return body.toString();
   }
 
-  public Vector<ASTId> getParameter(){
+  public Vector<String> getParameter(){
     return vs;
   };
 

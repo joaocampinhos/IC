@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class ASTFun implements ASTNode {
-  Vector<ASTId> vs;
+  Vector<String> vs;
   ASTNode body;
 
   public IValue eval(Env e) throws TypeError, Env.IdentifierDeclaredTwice, Env.UndeclaredIdentifier {
@@ -9,7 +9,7 @@ public class ASTFun implements ASTNode {
     return f;
   }
 
-  public ASTFun(Vector<ASTId> vec, ASTNode b) {
+  public ASTFun(Vector<String> vec, ASTNode b) {
     vs = vec;
     body  = b;
   }

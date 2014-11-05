@@ -5,10 +5,9 @@ public class ASTCall implements ASTNode {
   ASTNode body;
 
   public IValue eval(Env e) throws TypeError, Env.IdentifierDeclaredTwice, Env.UndeclaredIdentifier {
-    
-
     e.beginScope();
-
+    //TODO: fazer isto!
+    return null;
   }
 
   public ASTCall(Vector<ASTId> vec, ASTNode b) {
