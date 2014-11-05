@@ -49,11 +49,11 @@ Vector<Assoc> alist;
         private Env(Env up)
         {
     upper = up;
+    alist = new Vector<Assoc>(5,1);
         }
 
         public Env()
         {
-    upper = null;
     alist = new Vector<Assoc>(5,1);
         }
 
@@ -64,13 +64,13 @@ Vector<Assoc> alist;
 
   public Env beginScope()
   { 
-      upper = new Env(upper);
-      return upper;
+    //upper = new Env(upper);
+    //return upper;
+    return new Env(this);
   }
 
   public Env endScope()
   { 
-      upper = upper.getUpper();
       return upper;
   }
 
