@@ -4,11 +4,12 @@ public class FunValue implements IValue {
 
   Vector<String> vs;
   ASTNode body;
+  Env e;
 
-
-  FunValue(Vector<String> vec, ASTNode b) {
+  FunValue(Vector<String> vec, ASTNode b, Env e) {
     vs = vec;
     body = b;
+    this.e = e;
   }
 
   public VType typeOf() {
@@ -27,5 +28,8 @@ public class FunValue implements IValue {
     return body;
   };
 
+  public Env getEnv() {
+    return e;
+  };
 
 }

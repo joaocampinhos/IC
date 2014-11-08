@@ -5,7 +5,7 @@ public class ASTFun implements ASTNode {
   ASTNode body;
 
   public IValue eval(Env e) throws TypeError, Env.IdentifierDeclaredTwice, Env.UndeclaredIdentifier {
-    FunValue f = new FunValue(vs, body);  
+    FunValue f = new FunValue(vs, body, e);
     return f;
   }
 

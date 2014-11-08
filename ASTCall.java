@@ -8,7 +8,8 @@ public class ASTCall implements ASTNode {
     IValue f = body.eval(e);
     if (f.typeOf() == IValue.VType.FUN) {
       FunValue fun = (FunValue)f;
-      Env en = e.beginScope();
+      Env ee = fun.getEnv();
+      Env en = ee.beginScope();
       Vector<String> vv = fun.getParameter();
       Iterator<ASTNode> it = vs.iterator();
       Iterator<String> iv = vv.iterator();
