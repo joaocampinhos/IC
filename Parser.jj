@@ -275,7 +275,7 @@ ASTNode Eref():
   ASTNode t1;
 }
 {
-  (op=<NEW> | op=<NOT>)? t1=Fact()
+  (op=<NEW> | op=<NOT>)? t1=Call()
   {
     if (op!=null)
       if(op.kind == NEW)
@@ -285,6 +285,26 @@ ASTNode Eref():
   }
   {
     return t1;
+  }
+}
+
+ASTNode Call():
+{
+  ASTNode t, n;
+  Vector<ASTNode> v;
+}
+{
+  t = Fact() (<LPAR>{ v = new Vector<ASTNode>(); }
+    (
+      (n=Fact() {v.addElement(n);})
+      (<COMM>n=Fact() {v.addElement(n);})*
+    )?
+    <RPAR>
+  {
+    t = new ASTCall(v,t);
+  })?
+  {
+    return t;
   }
 }
 
