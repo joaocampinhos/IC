@@ -12,7 +12,7 @@ public class Parser {
     if (args.length > 0){
       c = new CodeBlock();
       Parser parser = new Parser(new FileInputStream(args[0]));
-      ASTNode exp = parser.Start();
+      ASTNode exp = parser.Prog();
       exp.compile(c);
       FileWriter writer = new FileWriter(new File("ctmp"), false);
       writer.write(c.print());
@@ -23,7 +23,7 @@ public class Parser {
       ASTNode exp;
       while (true) {
         try {
-          exp = parser.Start();
+          exp = parser.Prog();
           System.out.println("-> "+exp.eval(new Env()));
         }
         catch (Env.UndeclaredIdentifier e) {
@@ -169,10 +169,10 @@ ASTNode LFact():
   ASTNode t1, t2;
 }
 {
-  t1 = LCmp() | <NOT> t1 = LFact()
+  (t1 = LCmp() | <NOT> t1 = LFact()
   {
     t1 = new ASTNot(t1);
-  }
+  })
   {
     return t1;
   }
@@ -242,124 +242,67 @@ ASTNode Term():
 
 ASTNode Fact() :
 {
-  Token n=null;
+  Token n = null;
   ASTNode t1, t2, t3;
   Vector<Binding> ve;
   Vector<String> vs;
 }
 {
-  ( <MINUS> n = <NUM> { t1 = new ASTNeg(Integer.parserInt(n.image)); }
+  ( <MINUS> n = <NUM> { t1 = new ASTNeg(Integer.parseInt(n.image)); }
   | <DEREF> t1 = Fact() { t1 = new ASTDeref(t1); }
-  | SFact() (CFact())?
+  | t1 = SFact() (CFact(t1))?
   | <WHILE> t1 = SExp() <DO> t2 = SExp() <END> { t1 = new ASTWhile(t1, t2); }
   | <IF> t1 = SExp() <THEN> t2 = SExp() <ELSE> t3 = SExp() { t1 = new ASTIf(t1, t2, t3); }
-  //-----------------
-  (n=<NUM> {t= new ASTNum(Integer.parseInt(n.image)); }
-  | n=<ID> {t= new ASTId(n.image); }
-  | <DECL>   { ve = new Vector<Binding>(); }
-             ( n=<ID> <EQ> t=EMu()
-             { ve.addElement(new Binding(n.image, t)); }
-             )+
-    <IN> e=EMu() <END> { t = new ASTDecl(ve,e); }
-  | <LPAR> t=EMu() <RPAR>
-  | (n=<TRUE>|n=<FALSE>) {t = new ASTBool(n.image); }
-  | <MINUS> n=<NUM> { t= new ASTNeg(Integer.parseInt(n.image)); }
-  | <FUN> {vs = new Vector<String>();}
-          (
-            (n=<ID>{vs.addElement(n.image);})
-            (<COMM>n=<ID>{vs.addElement(n.image);})*
-          )?
-          <EQ><GT> e=EMu() <END> {t = new ASTFun(vs, e);})
-  {return t;}
+  | <FUN> { vs = new Vector<String>(); }
+      (
+        ( n = <ID> { vs.addElement(n.image); } )
+        ( <COMM> n = <ID> { vs.addElement(n.image); } )*
+      )?
+    <EQ><GT> t2 = SExp()
+    <END> { t1 = new ASTFun(vs, t2); }
+  | <DECL> { ve = new Vector<Binding>(); }
+      ( n = <ID> <EQ> t1 = SExp() { ve.addElement(new Binding(n.image, t1)); } )+
+    <IN>
+      t2 = SExp()
+    <END> { t1 = new ASTDecl(ve, t2); }
+  )
+  {
+    return t1;
+  }
 }
 
 ASTNode SFact():
 {
-}
-
-ASTNode CFact():
-{
-}
-
-//------------ APAGAR O RESTO ------------//
-
-ASTNode Ecard():
-{
-  Token op;
-  ASTNode t1, t2, t3;
-}
-{
-  <IF> t1=Exp() <THEN> t2=Exp() <ELSE> t3=Exp() { return new ASTIf(t1,t2,t3); }
-  | <WHILE> <LPAR>t1=ELog()<RPAR> <DO> t2=EMu() <END> { return new ASTWhile(t1,t2); }
-  | t1 = Exp() {return t1;}
-}
-
-
-
-ASTNode Print():
-{
- Token op=null;
- ASTNode t;
-}
-{
-  (op=<PRNTLN> | op=<PRNT>)? t=Deref() {if (op!=null)t = new ASTPrintln(t);}
-  {
-    return t;
-  }
-}
-
-ASTNode Deref():
-{
-  Token op = null;
+  Token n;
   ASTNode t1;
 }
 {
-  (op=<DEREF>)? t1=Eref()
-  {
-    if (op!=null)
-        t1= new ASTDeref(t1);
-  }
+  ( n = <NUM> { t1 = new ASTNum(Integer.parseInt(n.image)); }
+  | n = <ID> { t1 = new ASTId(n.image); }
+  | ( n = <TRUE> | n = <FALSE> ) { t1 = new ASTBool(n.image); }
+  | <LPAR> t1 = SExp() <RPAR>
+  )
   {
     return t1;
   }
 }
 
-ASTNode Eref():
+ASTNode CFact(ASTNode s):
 {
-  Token op = null;
-  ASTNode t1;
-}
-{
-  (op=<NEW> | op=<NOT>)? t1=Call()
-  {
-    if (op!=null)
-      if(op.kind == NEW)
-        t1= new ASTNew(t1);
-      else if(op.kind==NOT)
-        t1= new ASTNot(t1);
-  }
-  {
-    return t1;
-  }
-}
-
-ASTNode Call():
-{
-  ASTNode t, n;
+  Token n;
+  ASTNode t1, t2;
   Vector<ASTNode> v;
 }
 {
-  t = Fact() (<LPAR>{ v = new Vector<ASTNode>(); }
+  ( <LPAR> { v = new Vector<ASTNode>(); }
     (
-      (n=Fact() {v.addElement(n);})
-      (<COMM>n=Fact() {v.addElement(n);})*
+      ( t2 = SExp() { v.addElement(t2); } )
+      ( <COMM> t2 = SExp() { v.addElement(t2); } )*
     )?
-    <RPAR>
+    <RPAR> { t1 = new ASTCall(v, s); }
+  | <IFC> t1 = SExp() <COL> t2 = Fact() { t1 = new ASTIf(s, t1, t2); }
+  )
   {
-    t = new ASTCall(v,t);
-  })?
-  {
-    return t;
+    return t1;
   }
 }
-
