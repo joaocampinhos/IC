@@ -15,7 +15,7 @@ public class TypeEnv {
       return id;
     }
 
-    IValue getValue(){
+    IType getValue(){
       return v;
     }
   }
@@ -25,11 +25,11 @@ public class TypeEnv {
 
   private TypeEnv(TypeEnv up){
     upper = up;
-    alist = new Vector<Assoc>(5,1);
+    aList = new Vector<Assoc>(5,1);
   }
 
   public TypeEnv(){
-    alist = new Vector<Assoc>(5,1);
+    aList = new Vector<Assoc>(5,1);
   }
 
   private TypeEnv getUpper(){ 
@@ -52,24 +52,24 @@ public class TypeEnv {
         if (a.getId().equals(id))
       return a.getValue();
     }
-      if (upper != null) 
+      //if (upper != null) 
     return upper.find(id) ;
     //else throw new UndeclaredIdentifier(id);
   }
 
-  void assoc(String id, IValue v){ 
-      Iterator<Assoc> al = alist.iterator();
+  void assoc(String id, IType v){ 
+      Iterator<Assoc> al = aList.iterator();
             while (al.hasNext()) {   
         Assoc a = al.next();
         //if (a.getId().equals(id))
       //throw new IdentifierDeclaredTwice(id);
     }
-      alist.addElement(new Assoc(id,v));
+      aList.addElement(new Assoc(id,v));
   }
 
   public String toString() {
     String res = "";
-    Iterator<Assoc> al = alist.iterator();
+    Iterator<Assoc> al = aList.iterator();
             while (al.hasNext()) 
     {   
         Assoc a = al.next();
