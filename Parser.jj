@@ -70,8 +70,6 @@ TOKEN :
   | < NEW:   "new"    >
   | < IN:    "in"     >
   | < END:   "end"    >
-  | < TRUE:  "true"   >
-  | < FALSE: "false"  >
   | < IF:    "if"     >
   | < THEN:  "then"   >
   | < ELSE:  "else"   >
@@ -87,6 +85,7 @@ TOKEN :
   | < OR:    "||"     >
   | < AND:   "&&"     >
   | < COL:   ":"      >
+  | < ASS:   ":="     >
   | < EQEQ:  "=="     >
   | < EQ:    "="      >
   | < GT:    ">"      >
@@ -99,6 +98,7 @@ TOKEN :
   | < NOTE:  "!="     >
   | < SEMI : ";"      >
   | < NUM:   (["0"-"9"])+ >
+  | < BOOL:  ("true"|"false") >
   | < ID:    ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","0"-"9"])* >
 }
 
@@ -118,7 +118,7 @@ ASTNode SExp():
   ASTNode t1, t2;
 }
 {
-  t1 = LAss() (<SEMI> t2 = LAss()
+  t1 = LAss() ( <SEMI> t2 = LAss()
   {
     t1 = new ASTMultiple(t1, t2);
   })*
@@ -132,7 +132,7 @@ ASTNode LAss():
   ASTNode t1, t2;
 }
 {
-  t1 = LExp() (<COL><EQ> t2 = LExp()
+  t1 = LExp() ( <ASS> t2 = LExp()
   {
     t1 = new ASTAssi(t1, t2);
   })?
@@ -146,7 +146,7 @@ ASTNode LExp():
   ASTNode t1, t2;
 }
 {
-  t1 = LTerm() (<OR> t2 = LTerm()
+  t1 = LTerm() ( <OR> t2 = LTerm()
   {
     t1 = new ASTOr(t1, t2);
   })*
@@ -160,7 +160,7 @@ ASTNode LTerm():
   ASTNode t1, t2;
 }
 {
-  t1 = LFact() (<AND> t2 = LFact()
+  t1 = LFact() ( <AND> t2 = LFact()
   {
     t1 = new ASTAnd(t1, t2);
   })*
@@ -171,7 +171,7 @@ ASTNode LTerm():
 
 ASTNode LFact():
 {
-  ASTNode t1, t2;
+  ASTNode t1;
 }
 {
   (t1 = LCmp() | <NOT> t1 = LFact()
@@ -203,7 +203,7 @@ ASTNode LCmp():
       t1 = new ASTLthen(t1, t2);
     else
       t1 = new ASTLEthen(t1, t2);
-  })?
+  })*
   {
     return t1;
   }
@@ -239,32 +239,35 @@ ASTNode Term():
       t1 = new ASTMul(t1, t2);
     else
       t1 = new ASTDiv(t1, t2);
-   })*
+  })*
   {
     return t1;
   }
 }
 
-ASTNode Fact() :
+ASTNode Fact():
 {
-  Token n = null;
+  Token n;
   ASTNode t1, t2, t3;
   Vector<Binding> ve;
-  Vector<String> vs;
+  Vector<String>  vs;
 }
 {
-  ( <MINUS> n = <NUM> { t1 = new ASTNeg(Integer.parseInt(n.image)); }
-  | <NEW> t1 = Fact() { t1 = new ASTNew(t1); }
-  | <DEREF> t1 = Fact() { t1 = new ASTDeref(t1); }
+  ( <MINUS>  n  = <NUM>  { t1 = new ASTNeg(Integer.parseInt(n.image)); }
+  | <DEREF>  t1 = Fact() { t1 = new ASTDeref(t1); }
+  | <NEW>    t1 = Fact() { t1 = new ASTNew(t1); }
+  | <PRNT>   t1 = Fact() { t1 = new ASTPrint(t1); }
+  | <PRNTLN> t1 = Fact() { t1 = new ASTPrintln(t1); }
   | t1 = SFact() ( t1 = CFact(t1) )?
   | <WHILE> t1 = SExp() <DO> t2 = SExp() <END> { t1 = new ASTWhile(t1, t2); }
-  | <IF> t1 = SExp() <THEN> t2 = SExp() <ELSE> t3 = SExp() { t1 = new ASTIf(t1, t2, t3); }
+  | <IF> t1 = SExp() <THEN> t2 = SExp() <ELSE> t3 = SExp() <END> { t1 = new ASTIf(t1, t2, t3); }
   | <FUN> { vs = new Vector<String>(); }
       (
         ( n = <ID> { vs.addElement(n.image); } )
         ( <COMM> n = <ID> { vs.addElement(n.image); } )*
       )?
-    <EQ><GT> t2 = SExp()
+    <EQ><GT>
+      t2 = SExp()
     <END> { t1 = new ASTFun(vs, t2); }
   | <DECL> { ve = new Vector<Binding>(); }
       ( n = <ID> <EQ> t1 = SExp() { ve.addElement(new Binding(n.image, t1)); } )*
@@ -283,12 +286,10 @@ ASTNode SFact():
   ASTNode t1;
 }
 {
-  ( n = <NUM> { t1 = new ASTNum(Integer.parseInt(n.image)); }
-  | n = <ID> { t1 = new ASTId(n.image); }
-  | ( n = <TRUE> | n = <FALSE> ) { t1 = new ASTBool(n.image); }
-  | <LPAR> t1 = SExp() <RPAR>
-  | <PRNTLN> t1 = SExp() { t1 = new ASTPrintln(t1); }
-  | <PRNT> t1 = SExp() { t1 = new ASTPrint(t1); }
+  ( n = <NUM>  { t1 = new ASTNum(Integer.parseInt(n.image)); }
+  | n = <ID>   { t1 = new ASTId(n.image); }
+  | n = <BOOL> { t1 = new ASTBool(n.image); }
+  | <LPAR>  t1 = SExp() <RPAR>
   )
   {
     return t1;
@@ -297,7 +298,7 @@ ASTNode SFact():
 
 ASTNode CFact(ASTNode s):
 {
-  Token n;
+  Token op;
   ASTNode t1, t2;
   Vector<ASTNode> v;
 }
