@@ -1,7 +1,3 @@
-options {
-  LOOKAHEAD = 1;
-}
-
 PARSER_BEGIN(Parser)
 
 import java.io.*;
