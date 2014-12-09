@@ -16,6 +16,7 @@ SKIP :
 
 TOKEN :
 {
+<<<<<<< HEAD
   < EL       : ";;\n"   >
   | < DECL   : "decl"   >
   | < WHILE  : "while"  >
