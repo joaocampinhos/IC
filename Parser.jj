@@ -51,6 +51,9 @@ TOKEN :
   | < NOT    : "~"      >
   | < NOTE   : "!="     >
   | < SEMI   : ";"      >
+  | < LBRACK : "{"      >
+  | < RBRACK : "}"      >
+  | < DOT    : "."      >
   | < NUM    : (["0"-"9"])+ >
   | < BOOL   : ("true" | "false") >
   | < TYPE   : ("int" | "bool" | "ref" | "rec") >
