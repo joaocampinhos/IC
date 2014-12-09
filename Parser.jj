@@ -283,11 +283,19 @@ ASTNode SFact():
 {
   Token n;
   ASTNode t1;
+  Vector<Binding> ve;
 }
 {
   ( n = <NUM>  { t1 = new ASTNum(Integer.parseInt(n.image)); }
   | n = <ID>   { t1 = new ASTId(n.image); }
   | n = <BOOL> { t1 = new ASTBool(n.image); }
+  | <LBRACK>
+      { ve = new Vector<Binding>(); }
+      (
+        ( n = <ID> <EQ> t1 = SExp() { ve.addElement(new Binding(n.image, t1)); } )
+        ( <COMM> n = <ID> <EQ> t1 = SExp() { ve.addElement(new Binding(n.image, t1)); } )*
+      )?
+    <RBRACK> { t1 = new ASTRecord(ve); }
   | <LPAR>  t1 = SExp() <RPAR>
   )
   {
