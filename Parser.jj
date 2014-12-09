@@ -16,44 +16,47 @@ SKIP :
 
 TOKEN :
 {
-  < EL:      ";;\n"   >
-  | < DECL:  "decl"   >
-  | < WHILE: "while"  >
-  | < FUN:   "fun"    >
-  | < DO:    "do"     >
-  | < NEW:   "new"    >
-  | < IN:    "in"     >
-  | < END:   "end"    >
-  | < IF:    "if"     >
-  | < THEN:  "then"   >
-  | < ELSE:  "else"   >
-  | < PRNT:  "print"  >
-  | < PRNTLN:"println">
-  | < COMM : ","      >
-  | < PLUS : "+"      >
-  | < MINUS: "-"      >
-  | < TIMES: "*"      >
-  | < DIV:   "/"      >
-  | < LPAR:  "("      >
-  | < RPAR:  ")"      >
-  | < OR:    "||"     >
-  | < AND:   "&&"     >
-  | < COL:   ":"      >
-  | < ASS:   ":="     >
-  | < EQEQ:  "=="     >
-  | < EQ:    "="      >
-  | < GT:    ">"      >
-  | < GET:   ">="     >
-  | < LT:    "<"      >
-  | < LET:   "<="     >
-  | < IFC:   "?"      >
-  | < DEREF: "!"      >
-  | < NOT:   "~"      >
-  | < NOTE:  "!="     >
-  | < SEMI : ";"      >
-  | < NUM:   (["0"-"9"])+ >
-  | < BOOL:  ("true"|"false") >
-  | < ID:    ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","0"-"9"])* >
+  < EL      : ";;\n"   >
+  | < DECL  : "decl"   >
+  | < WHILE : "while"  >
+  | < FUN   : "fun"    >
+  | < DO    : "do"     >
+  | < NEW   : "new"    >
+  | < IN    : "in"     >
+  | < END   : "end"    >
+  | < IF    : "if"     >
+  | < THEN  : "then"   >
+  | < ELSE  : "else"   >
+  | < PRNT  : "print"  >
+  | < PRNTLN: "println">
+  | < COMM  : ","      >
+  | < PLUS  : "+"      >
+  | < MINUS : "-"      >
+  | < TIMES : "*"      >
+  | < DIV   : "/"      >
+  | < LPAR  : "("      >
+  | < RPAR  : ")"      >
+  | < OR    : "||"     >
+  | < AND   : "&&"     >
+  | < COL   : ":"      >
+  | < ASS   : ":="     >
+  | < EQEQ  : "=="     >
+  | < EQ    : "="      >
+  | < GT    : ">"      >
+  | < GET   : ">="     >
+  | < LT    : "<"      >
+  | < LET   : "<="     >
+  | < IFC   : "?"      >
+  | < DEREF : "!"      >
+  | < NOT   : "~"      >
+  | < NOTE  : "!="     >
+  | < SEMI  : ";"      >
+  | < LBRACK: "{"      >
+  | < RBRACK: "}"      >
+  | < DOT   : "."      >
+  | < NUM   : (["0"-"9"])+                                   >
+  | < BOOL  : ("true"|"false")                               >
+  | < ID    : ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","0"-"9"])* >
 }
 
 ASTNode Prog():
