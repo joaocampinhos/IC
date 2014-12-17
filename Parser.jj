@@ -51,8 +51,8 @@ TOKEN :
   | < NOT   : "~"      >
   | < NOTE  : "!="     >
   | < SEMI  : ";"      >
-  | < LBRACK: "{"      >
-  | < RBRACK: "}"      >
+  | < LBRACK: "["      >
+  | < RBRACK: "]"      >
   | < DOT   : "."      >
   | < NUM   : (["0"-"9"])+                                   >
   | < BOOL  : ("true"|"false")                               >
@@ -274,6 +274,7 @@ ASTNode CFact(ASTNode s):
       ( <COMM> t2 = SExp() { v.addElement(t2); } )*
     )?
     <RPAR> { t1 = new ASTCall(v, s); }
+  | <DOT> op = <ID> { t1 = new ASTGetRec(op.image, s); }
   | <IFC> t1 = SExp() <COL> t2 = Fact() { t1 = new ASTIf(s, t1, t2); }
   )
   {

@@ -1,7 +1,7 @@
 public class ASTNot implements ASTNode {
   ASTNode t;
 
-  public IValue eval(Env e) throws TypeError, Env.IdentifierDeclaredTwice, Env.UndeclaredIdentifier{
+  public IValue eval(Env e) throws TypeError, Env.IdentifierDeclaredTwice, Env.UndeclaredIdentifier, UndefinedField{
     IValue i = t.eval(e);
 
     if (i.typeOf() == IValue.VType.BOOLEAN) {
