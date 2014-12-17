@@ -18,7 +18,7 @@ run:
 	@echo "------------------"
 	@echo " Interpretor      "
 	@echo "------------------"
-	$(J) $(DIR)
+	$(J) Main i
 
 comp:
 	@echo "------------------"

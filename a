@@ -1,1 +1,7 @@
-(3>10)? ((3>3)?4:5):4
+println(3);
+decl
+two = fun f, x => f ( f ( x )) end
+  in
+decl x = two ( fun y => y+1 end, 2 )
+  in println x ; z end
+  end;;
