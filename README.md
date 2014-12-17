@@ -3,7 +3,7 @@ IC
 
 **Interpretador:**
 ```
-$ make i(nterpretor)
+$ ./funny (file.fy)
 ``` 
 
 **Compilador:**
