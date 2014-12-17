@@ -1,10 +1,10 @@
 #!/bin/bash
 FILE=$1
 
-if [ -f $FILE ];
+if [ ! -f Main.class ];
 then
-  echo "File $FILE exists"
-else
-  echo "File $FILE does not exists"
+  echo "Compiling..."
+  make >/dev/null
 fi
 
+java Main i $FILE
