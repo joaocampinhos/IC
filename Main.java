@@ -13,7 +13,7 @@ public class Main {
   public static final String ANSI_CYAN = "\u001B[36m";
   public static final String ANSI_WHITE = "\u001B[37m";
 
-  public static void main(String args[]) throws IOException, ParseException, TypeError {
+  public static void main(String args[]) throws IOException, ParseException, TypeError, UndefinedField{
 
     if (args.length > 0) {
 
@@ -42,6 +42,9 @@ public class Main {
           catch (TypeError e) {
             System.out.println (ANSI_RED + "Unexpected operand type.!" + ANSI_RESET);
           }
+          catch (UndefinedField e) {
+            System.out.println (ANSI_RED + "Undefined field on the Record" + ANSI_RESET);
+          }
           catch (ParseException e) {
             System.out.println (ANSI_RED + "Syntax error." + ANSI_RESET);
           }
@@ -67,6 +70,9 @@ public class Main {
             catch (TypeError e) {
               System.out.println (ANSI_RED + "Unexpected operand type.!" + ANSI_RESET);
               parser.ReInit(System.in);
+            }
+            catch (UndefinedField e) {
+              System.out.println (ANSI_RED + "Undefined field on the Record" + ANSI_RESET);
             }
             catch (ParseException e) {
               System.out.println (ANSI_RED + "Syntax error." + ANSI_RESET);

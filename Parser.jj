@@ -16,7 +16,6 @@ SKIP :
 
 TOKEN :
 {
-<<<<<<< HEAD
   < EL       : ";;\n"   >
   | < DECL   : "decl"   >
   | < WHILE  : "while"  >
@@ -276,6 +275,7 @@ ASTNode CFact(ASTNode s):
       ( <COMM> t2 = SExp() { v.addElement(t2); } )*
     )?
     <RPAR> { t1 = new ASTCall(v, s); }
+  | <DOT> op = <ID> { t1 = new ASTGetRec(op.image, s); }
   | <IFC> t1 = SExp() <COL> t2 = Fact() { t1 = new ASTIf(s, t1, t2); }
   )
   {
