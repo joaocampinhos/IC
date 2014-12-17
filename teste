@@ -1,0 +1,20 @@
+decl
+    counter = fun init =>
+        decl
+            val = new init
+        in
+            [
+                inc = fun  => val := !val + 1 end ,
+                get = fun  => !val end
+            ]
+
+        end
+    end
+in
+    decl
+        c1= counter(1)
+        c2= counter(2)
+    in
+        c1.inc()
+    end
+end;;
