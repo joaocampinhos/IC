@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "Se for chamado com parametros executa o ficheiro"
+echo "Se não, abre o interpretador"
