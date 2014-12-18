@@ -9,6 +9,10 @@ public class ASTBool implements ASTNode {
     val = Boolean.parseBoolean(n);
   }
 
+  public IType typeCheck(TypeEnv e) {
+    return new BoolType();
+  }
+
   public void compile(CodeBlock c) {
     int v = val ? 1 : 0;
     c.add("sipush "+v);

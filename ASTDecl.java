@@ -22,6 +22,10 @@ public class ASTDecl implements ASTNode {
     this.t  = t;
   }
 
+  public IType typeCheck(TypeEnv e) {
+    return null;
+  }
+
   public void compile(CodeBlock c) {
   }
 }

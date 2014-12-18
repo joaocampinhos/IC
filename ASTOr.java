@@ -18,6 +18,10 @@ public class ASTOr implements ASTNode {
     right = r;
   }
 
+  public IType typeCheck(TypeEnv e) {
+    return null;
+  }
+
   public void compile(CodeBlock c) {
     left.compile(c);
     right.compile(c);

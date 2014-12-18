@@ -10,6 +10,10 @@ public class ASTNew implements ASTNode {
     t = n;
   }
 
+  public IType typeCheck(TypeEnv e) {
+    return null;
+  }
+
   public void compile(CodeBlock c) {
   }
 }

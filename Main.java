@@ -53,7 +53,7 @@ public class Main {
             System.out.print("> ");
             try {
               exp = parser.Prog();
-              //System.out.println("-> "+exp.eval(new Env()));
+              System.out.println("-> "+exp.typeCheck(new TypeEnv()));
               System.out.println(ANSI_YELLOW + exp.eval(new Env()) + ANSI_RESET);
             }
             catch (Env.UndeclaredIdentifier e) {
@@ -78,18 +78,18 @@ public class Main {
 
         //Compilador
         /*
-        CodeBlock c;
-        if (args.length > 0){
-        c = new CodeBlock();
-        Parser parser = new Parser(new FileInputStream(args[0]));
-        ASTNode exp = parser.Prog();
-        exp.compile(c);
-        FileWriter writer = new FileWriter(new File("ctmp"), false);
-        writer.write(c.print());
-        writer.close();
-        */
+           CodeBlock c;
+           if (args.length > 0){
+           c = new CodeBlock();
+           Parser parser = new Parser(new FileInputStream(args[0]));
+           ASTNode exp = parser.Prog();
+           exp.compile(c);
+           FileWriter writer = new FileWriter(new File("ctmp"), false);
+           writer.write(c.print());
+           writer.close();
+           */
 
+           }
       }
     }
   }
-}

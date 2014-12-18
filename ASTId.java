@@ -9,6 +9,11 @@ public class ASTId implements ASTNode {
     val = n;
   }
 
+  public IType typeCheck(TypeEnv e) {
+    return null;
+  }
+
+
   public void compile(CodeBlock c) {
   }
 }

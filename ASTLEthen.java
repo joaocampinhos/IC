@@ -18,6 +18,10 @@ public class ASTLEthen implements ASTNode {
     right = r;
   }
 
+  public IType typeCheck(TypeEnv e) {
+    return null;
+  }
+
   public void compile(CodeBlock c) {
     c.incCounter();
     final String temp = c.getCounter();

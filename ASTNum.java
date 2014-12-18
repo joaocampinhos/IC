@@ -9,6 +9,10 @@ public class ASTNum implements ASTNode {
     val = n;
   }
 
+  public IType typeCheck(TypeEnv e) {
+    return new IntType();
+  }
+
   public void compile(CodeBlock c) {
     c.add("sipush "+val);
   }

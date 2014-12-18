@@ -9,6 +9,10 @@ public class ASTNeg implements ASTNode {
     val = n;
   }
 
+  public IType typeCheck(TypeEnv e) {
+    return null;
+  }
+
   public void compile(CodeBlock c) {
     c.add("sipush "+(-val));
   }

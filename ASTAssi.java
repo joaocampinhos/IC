@@ -17,6 +17,10 @@ public class ASTAssi implements ASTNode {
     r = t2;
   }
 
+  public IType typeCheck(TypeEnv e) {
+    return null;
+  }
+
   public void compile(CodeBlock c) {
   }
 }
