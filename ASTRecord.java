@@ -12,6 +12,10 @@ public class ASTRecord implements ASTNode {
     this.ve = ve;
   }
 
+  public IType typeCheck(TypeEnv e) throws TypeError {
+    return new CmdType();
+  }
+
   public void compile(CodeBlock c) {
   }
 }

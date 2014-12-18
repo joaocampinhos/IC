@@ -40,6 +40,10 @@ public class ASTGetRec implements ASTNode {
     this.id = id;
   }
 
+  public IType typeCheck(TypeEnv e) throws TypeError {
+    return new CmdType();
+  }
+
   public void compile(CodeBlock c) {
   }
 }
