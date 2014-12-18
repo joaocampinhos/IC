@@ -27,7 +27,7 @@ public class ASTEquals implements ASTNode {
     IType l = left.typeCheck(e);
     IType r = right.typeCheck(e);
 
-    if ((l.typeOf() == IType.TType.BOOLEAN && r.typeOf() == IType.TType.BOOLEAN) || (.typeOf() == IType.TType.INTEGER && r.typeOf() == IType.TType.INTEGER))
+    if ((l.typeOf() == IType.TType.BOOLEAN && r.typeOf() == IType.TType.BOOLEAN) || (l.typeOf() == IType.TType.INTEGER && r.typeOf() == IType.TType.INTEGER))
       return new BoolType();
     else throw new TypeError();
   }
