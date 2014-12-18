@@ -24,7 +24,7 @@ comp:
 	@echo "------------------"
 	@echo " Compiling        "
 	@echo "------------------"
-	$(J) $(DIR) $(input) $(output)
+	$(J) Main c  $(input) $(output)
 	cp compile/t1 compile/t1.tmp
 	sed -i'.bak' s/Demo/$(output)/g compile/t1.tmp
 	cat compile/t1.tmp ctmp compile/t2 > ctmp.j

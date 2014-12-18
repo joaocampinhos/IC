@@ -77,19 +77,18 @@ public class Main {
       } else if (args[0].equals("c")) {
 
         //Compilador
-        /*
-           CodeBlock c;
-           if (args.length > 0){
-           c = new CodeBlock();
-           Parser parser = new Parser(new FileInputStream(args[0]));
-           ASTNode exp = parser.Prog();
-           exp.compile(c);
-           FileWriter writer = new FileWriter(new File("ctmp"), false);
-           writer.write(c.print());
-           writer.close();
-           */
 
-           }
+        CodeBlock c;
+        if (args.length > 0){
+          c = new CodeBlock();
+          Parser parser = new Parser(new FileInputStream(args[1]));
+          ASTNode exp = parser.Prog();
+          exp.compile(c);
+          FileWriter writer = new FileWriter(new File("ctmp"), false);
+          writer.write(c.print());
+          writer.close();
+        }
       }
     }
   }
+}

@@ -1,3 +1,11 @@
 #!/bin/bash
-echo "Se for chamado com parametros executa o ficheiro"
-echo "Se não, abre o interpretador"
+FILE=$1
+
+if [ ! -f Main.class ];
+then
+  echo "Compiling..."
+  make >/dev/null
+fi
+
+make c input=$FILE output=$FILE > /dev/null
+echo "run with: java $(output)"
