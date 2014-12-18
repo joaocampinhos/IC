@@ -12,6 +12,9 @@ public class ASTPrintln implements ASTNode {
   }
 
   public IType typeCheck(TypeEnv e) throws TypeError{
+
+    left.typeCheck(e);
+
     return new CmdType();
   }
 

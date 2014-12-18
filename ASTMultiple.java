@@ -5,8 +5,6 @@ public class ASTMultiple implements ASTNode {
 
     IValue v1 = left.eval(e);
 
-    //System.out.println(e.toString());
-
     e.beginScope();
     IValue v2 = right.eval(e);
     e.endScope();
@@ -20,7 +18,11 @@ public class ASTMultiple implements ASTNode {
   }
 
   public IType typeCheck(TypeEnv e) throws TypeError{
-    return new CmdType();
+
+    left.typeCheck(e);
+    IType res = right.typeCheck(e);
+
+    return res;
   }
 
   public void compile(CodeBlock c) {
