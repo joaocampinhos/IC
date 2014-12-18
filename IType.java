@@ -1,11 +1,12 @@
 public interface IType {
 
   public enum TType {
+    CMD,
+    FUN,
+    RECORD,
     INTEGER,
     BOOLEAN,
-    REFERENCE,
-    FUN,
-    CMD
+    REFERENCE
   }
 
   TType typeOf();

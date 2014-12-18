@@ -1,11 +1,12 @@
 public interface IValue {
 
   public enum VType {
+    ID,
+    FUN,
+    REC,
     INTEGER,
     BOOLEAN,
-    ID,
-    REFERENCE,
-    FUN
+    REFERENCE
   }
 
   VType typeOf();

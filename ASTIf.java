@@ -1,7 +1,7 @@
 public class ASTIf implements ASTNode {
   ASTNode exp, expif, expelse;
 
-  public IValue eval(Env e) throws TypeError, Env.IdentifierDeclaredTwice, Env.UndeclaredIdentifier {
+  public IValue eval(Env e) throws TypeError, Env.IdentifierDeclaredTwice, Env.UndeclaredIdentifier{
     IValue e1 = exp.eval(e);
     IValue e2 = expif.eval(e);
     IValue e3 = expelse.eval(e);

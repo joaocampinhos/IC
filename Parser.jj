@@ -51,6 +51,9 @@ TOKEN :
   | < NOT    : "~"      >
   | < NOTE   : "!="     >
   | < SEMI   : ";"      >
+  | < LBRACK : "{"      >
+  | < RBRACK : "}"      >
+  | < DOT    : "."      >
   | < NUM    : (["0"-"9"])+ >
   | < BOOL   : ("true" | "false") >
   | < TYPE   : ("int" | "bool" | "ref" | "rec") >
@@ -229,6 +232,13 @@ ASTNode Fact():
     <IN>
       t2 = SExp()
     <END> { t1 = new ASTDecl(ve, t2); }
+  | <LBRACK>
+      { ve = new Vector<Binding>(); }
+      (
+        ( n = <ID> <EQ> t1 = SExp() { ve.addElement(new Binding(n.image, t1)); } )
+        ( <COMM> n = <ID> <EQ> t1 = SExp() { ve.addElement(new Binding(n.image, t1)); } )*
+      )?
+    <RBRACK> { t1 = new ASTRecord(ve); }
   )
   {
     return t1;
@@ -264,6 +274,7 @@ ASTNode CFact(ASTNode s):
       ( <COMM> t2 = SExp() { v.addElement(t2); } )*
     )?
     <RPAR> { t1 = new ASTCall(v, s); }
+  | <DOT> t1 = Fact() { t1 = new ASTGetRec(t1, s); }
   | <IFC> t1 = SExp() <COL> t2 = Fact() { t1 = new ASTIf(s, t1, t2); }
   )
   {
