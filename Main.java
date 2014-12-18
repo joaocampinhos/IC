@@ -42,9 +42,6 @@ public class Main {
           catch (TypeError e) {
             System.out.println (ANSI_RED + "Unexpected operand type.!" + ANSI_RESET);
           }
-          catch (UndefinedField e) {
-            System.out.println (ANSI_RED + "Undefined field on the Record" + ANSI_RESET);
-          }
           catch (ParseException e) {
             System.out.println (ANSI_RED + "Syntax error." + ANSI_RESET);
           }
@@ -70,9 +67,6 @@ public class Main {
             catch (TypeError e) {
               System.out.println (ANSI_RED + "Unexpected operand type.!" + ANSI_RESET);
               parser.ReInit(System.in);
-            }
-            catch (UndefinedField e) {
-              System.out.println (ANSI_RED + "Undefined field on the Record" + ANSI_RESET);
             }
             catch (ParseException e) {
               System.out.println (ANSI_RED + "Syntax error." + ANSI_RESET);

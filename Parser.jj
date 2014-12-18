@@ -274,8 +274,7 @@ ASTNode CFact(ASTNode s):
       ( <COMM> t2 = SExp() { v.addElement(t2); } )*
     )?
     <RPAR> { t1 = new ASTCall(v, s); }
-  t1 = SFact() ( t1 = CFact(t1) )?
-  | <DOT> t1 = SFact() { t1 = new ASTGetRec(t1, s); }
+  | <DOT> t1 = Fact() { t1 = new ASTGetRec(t1, s); }
   | <IFC> t1 = SExp() <COL> t2 = Fact() { t1 = new ASTIf(s, t1, t2); }
   )
   {

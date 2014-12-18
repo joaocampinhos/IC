@@ -4,7 +4,15 @@ public class ASTRecord implements ASTNode {
   Vector<Binding> ve;
 
   public IValue eval(Env e) throws TypeError, Env.IdentifierDeclaredTwice, Env.UndeclaredIdentifier {
-    RecValue r = new RecValue(ve,e);
+    Env eaux = e.beginScope();
+
+    Iterator<Binding> it = ve.iterator();
+    while(it.hasNext()) {
+      Binding a = it.next();
+      eaux.assoc(a.getId(), a.getExp().eval(e));
+    }
+
+    RecValue r = new RecValue(eaux);
     return r;
   }
 
