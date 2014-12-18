@@ -43,9 +43,9 @@ public class ASTIf implements ASTNode {
     IType e2 = expif.typeCheck(e);
     IType e3 = expelse.typeCheck(e);
 
-    if (e1.typeOf() == IType.TType.BOOLEAN && e2.typeOf() == IType.TType.BOOLEAN && e3.typeOf() == IType.TType.BOOLEAN)
-      return new BoolType();
-    else throw new TypeError();
+    if (e1.typeOf() == IType.TType.BOOLEAN) {
+      return new CmdType();
+    } else throw new TypeError();
   }
 
   public void compile(CodeBlock c) {

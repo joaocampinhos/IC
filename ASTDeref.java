@@ -18,8 +18,11 @@ public class ASTDeref implements ASTNode {
 
   public IType typeCheck(TypeEnv e) throws TypeError{
     IType tt = t.typeCheck(e);
-    if (tt.typeOf() == IType.TType.REFERENCE)
-      return t.typeCheck(e);
+    if (tt.typeOf() == IType.TType.REFERENCE) {
+      RefType res = (RefType)tt;
+
+      return res.getRef();
+    }
     else throw new TypeError();
   }
 

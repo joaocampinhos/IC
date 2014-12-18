@@ -5,9 +5,6 @@ public class ASTWhile implements ASTNode {
     IValue v1 = left.eval(e);
     IValue v2 = right.eval(e);
 
-    System.out.println(v1);
-    System.out.println(v2);
-
     if (v1.typeOf() == IValue.VType.BOOLEAN) {
       BoolValue vl = (BoolValue)v1;
       while (vl.getVal()) {
@@ -28,9 +25,10 @@ public class ASTWhile implements ASTNode {
   public IType typeCheck(TypeEnv e) throws TypeError{
     IType l = left.typeCheck(e);
 
-    if (l.typeOf() == IType.TType.BOOLEAN)
+    if (l.typeOf() == IType.TType.BOOLEAN) {
+      right.typeCheck(e);
       return new CmdType();
-    else throw new TypeError();
+    } else throw new TypeError();
   }
 
   public void compile(CodeBlock c) {
