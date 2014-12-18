@@ -15,6 +15,7 @@ public class RefType implements IType{
   }
 
   public String toString() {
-    return "ref["+n.toString()+"]";
+    //return "ref["+n.toString()+"]";
+    return "ref";
   }
 }

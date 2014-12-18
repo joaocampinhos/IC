@@ -32,9 +32,35 @@ public class ASTCall implements ASTNode {
 
   public IType typeCheck(TypeEnv e) throws TypeError{
     IType f = body.typeCheck(e);
-    if (f.typeOf() == IType.TType.FUN)
-      return new FunType();
-    else throw new TypeError();
+    if (f.typeOf() == IType.TType.FUN) {
+      FunType fun = (FunType)f;
+      TypeEnv ee = fun.getEnv();
+      TypeEnv en = ee.beginScope();
+
+      Vector<String> vv = fun.getParameter();
+      Vector<String> vi = fun.getIds();
+
+      Iterator<ASTNode> it = vs.iterator();
+      Iterator<String> iv = vv.iterator();
+      Iterator<String> vid = vi.iterator();
+
+      while(iv.hasNext()) {
+
+        String d = iv.next();
+        ASTNode a = it.next();
+        String id = vid.next();
+
+        IType b = a.typeCheck(e);
+        if (b.toString().equals(d)) {
+          en.assoc(id, b);
+        } else throw new TypeError();
+      }
+
+      IType r = fun.getBody().typeCheck(en);
+      en.endScope();
+
+      return r;
+    } else throw new TypeError();
   }
 
   public void compile(CodeBlock c) {

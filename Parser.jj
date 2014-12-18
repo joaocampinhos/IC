@@ -16,44 +16,45 @@ SKIP :
 
 TOKEN :
 {
-  < EL:      ";;\n"   >
-  | < DECL:  "decl"   >
-  | < WHILE: "while"  >
-  | < FUN:   "fun"    >
-  | < DO:    "do"     >
-  | < NEW:   "new"    >
-  | < IN:    "in"     >
-  | < END:   "end"    >
-  | < IF:    "if"     >
-  | < THEN:  "then"   >
-  | < ELSE:  "else"   >
-  | < PRNT:  "print"  >
-  | < PRNTLN:"println">
-  | < COMM : ","      >
-  | < PLUS : "+"      >
-  | < MINUS: "-"      >
-  | < TIMES: "*"      >
-  | < DIV:   "/"      >
-  | < LPAR:  "("      >
-  | < RPAR:  ")"      >
-  | < OR:    "||"     >
-  | < AND:   "&&"     >
-  | < COL:   ":"      >
-  | < ASS:   ":="     >
-  | < EQEQ:  "=="     >
-  | < EQ:    "="      >
-  | < GT:    ">"      >
-  | < GET:   ">="     >
-  | < LT:    "<"      >
-  | < LET:   "<="     >
-  | < IFC:   "?"      >
-  | < DEREF: "!"      >
-  | < NOT:   "~"      >
-  | < NOTE:  "!="     >
-  | < SEMI : ";"      >
-  | < NUM:   (["0"-"9"])+ >
-  | < BOOL:  ("true"|"false") >
-  | < ID:    ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","0"-"9"])* >
+  < EL       : ";;\n"   >
+  | < DECL   : "decl"   >
+  | < WHILE  : "while"  >
+  | < FUN    : "fun"    >
+  | < DO     : "do"     >
+  | < NEW    : "new"    >
+  | < IN     : "in"     >
+  | < END    : "end"    >
+  | < IF     : "if"     >
+  | < THEN   : "then"   >
+  | < ELSE   : "else"   >
+  | < PRNT   : "print"  >
+  | < PRNTLN : "println">
+  | < COMM   : ","      >
+  | < PLUS   : "+"      >
+  | < MINUS  : "-"      >
+  | < TIMES  : "*"      >
+  | < DIV    : "/"      >
+  | < LPAR   : "("      >
+  | < RPAR   : ")"      >
+  | < OR     : "||"     >
+  | < AND    : "&&"     >
+  | < COL    : ":"      >
+  | < ASS    : ":="     >
+  | < EQEQ   : "=="     >
+  | < EQ     : "="      >
+  | < GT     : ">"      >
+  | < GET    : ">="     >
+  | < LT     : "<"      >
+  | < LET    : "<="     >
+  | < IFC    : "?"      >
+  | < DEREF  : "!"      >
+  | < NOT    : "~"      >
+  | < NOTE   : "!="     >
+  | < SEMI   : ";"      >
+  | < NUM    : (["0"-"9"])+ >
+  | < BOOL   : ("true" | "false") >
+  | < TYPE   : ("int" | "bool" | "ref" | "rec") >
+  | < ID     : ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","0"-"9"])* >
 }
 
 ASTNode Prog():
@@ -201,10 +202,10 @@ ASTNode Term():
 
 ASTNode Fact():
 {
-  Token n;
+  Token n,t;
   ASTNode t1, t2, t3;
   Vector<Binding> ve;
-  Vector<String>  vs;
+  Vector<String>  vs, vt;
 }
 {
   ( <MINUS>  n  = <NUM>  { t1 = new ASTNeg(Integer.parseInt(n.image)); }
@@ -215,14 +216,14 @@ ASTNode Fact():
   | t1 = SFact() ( t1 = CFact(t1) )?
   | <WHILE> t1 = SExp() <DO> t2 = SExp() <END> { t1 = new ASTWhile(t1, t2); }
   | <IF> t1 = SExp() <THEN> t2 = SExp() <ELSE> t3 = SExp() <END> { t1 = new ASTIf(t1, t2, t3); }
-  | <FUN> { vs = new Vector<String>(); }
+  | <FUN> { vs = new Vector<String>(); vt = new Vector<String>(); }
       (
-        ( n = <ID> { vs.addElement(n.image); } )
-        ( <COMM> n = <ID> { vs.addElement(n.image); } )*
+        ( n = <ID><COL> t = <TYPE> { vs.addElement(n.image); vt.addElement(t.image); } )
+        ( <COMM> n = <ID><COL> t = <TYPE> { vs.addElement(n.image); vt.addElement(t.image); } )*
       )?
     <EQ><GT>
       t2 = SExp()
-    <END> { t1 = new ASTFun(vs, t2); }
+    <END> { t1 = new ASTFun(vs, vt, t2); }
   | <DECL> { ve = new Vector<Binding>(); }
       ( n = <ID> <EQ> t1 = SExp() { ve.addElement(new Binding(n.image, t1)); } )*
     <IN>
