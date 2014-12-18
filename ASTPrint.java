@@ -11,8 +11,8 @@ public class ASTPrint implements ASTNode {
     left = l;
   }
 
-  public IType typeCheck(TypeEnv e) {
-    return null;
+  public IType typeCheck(TypeEnv e) throws TypeError{
+    return new CmdType();
   }
 
   public void compile(CodeBlock c) {

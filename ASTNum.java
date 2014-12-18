@@ -9,7 +9,7 @@ public class ASTNum implements ASTNode {
     val = n;
   }
 
-  public IType typeCheck(TypeEnv e) {
+  public IType typeCheck(TypeEnv e) throws TypeError{
     return new IntType();
   }
 

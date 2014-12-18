@@ -18,8 +18,13 @@ public class ASTDiv implements ASTNode {
     right = r;
   }
 
-  public IType typeCheck(TypeEnv e) {
-    return null;
+  public IType typeCheck(TypeEnv e) throws TypeError{
+    IType l = left.typeCheck(e);
+    IType r = right.typeCheck(e);
+
+    if (l.typeOf() == IType.TType.INTEGER && r.typeOf() == IType.TType.INTEGER)
+      return new IntType();
+    else throw new TypeError();
   }
 
   public void compile(CodeBlock c) {

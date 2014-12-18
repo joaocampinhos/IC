@@ -14,8 +14,8 @@ public class ASTFun implements ASTNode {
     body  = b;
   }
 
-  public IType typeCheck(TypeEnv e) {
-    return null;
+  public IType typeCheck(TypeEnv e) throws TypeError{
+      return new FunType();
   }
 
   public void compile(CodeBlock c) {

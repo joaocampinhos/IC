@@ -23,8 +23,13 @@ public class ASTEquals implements ASTNode {
     right = r;
   }
 
-  public IType typeCheck(TypeEnv e) {
-    return null;
+  public IType typeCheck(TypeEnv e) throws TypeError{
+    IType l = left.typeCheck(e);
+    IType r = right.typeCheck(e);
+
+    if (l.typeOf() == IType.TType.BOOLEAN && r.typeOf() == IType.TType.BOOLEAN)
+      return new BoolType();
+    else throw new TypeError();
   }
 
   public void compile(CodeBlock c) {

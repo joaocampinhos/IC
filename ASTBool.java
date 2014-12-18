@@ -9,7 +9,7 @@ public class ASTBool implements ASTNode {
     val = Boolean.parseBoolean(n);
   }
 
-  public IType typeCheck(TypeEnv e) {
+  public IType typeCheck(TypeEnv e) throws TypeError{
     return new BoolType();
   }
 

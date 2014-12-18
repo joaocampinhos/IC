@@ -15,8 +15,12 @@ public class ASTNot implements ASTNode {
     t = n;
   }
 
-  public IType typeCheck(TypeEnv e) {
-    return null;
+  public IType typeCheck(TypeEnv e) throws TypeError{
+    IType tt = t.typeCheck(e);
+
+    if (tt.typeOf() == IType.TType.BOOLEAN)
+      return new BoolType();
+    else throw new TypeError();
   }
 
   public void compile(CodeBlock c) {

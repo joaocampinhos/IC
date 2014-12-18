@@ -30,8 +30,11 @@ public class ASTCall implements ASTNode {
     body  = b;
   }
 
-  public IType typeCheck(TypeEnv e) {
-    return null;
+  public IType typeCheck(TypeEnv e) throws TypeError{
+    IType f = body.typeCheck(e);
+    if (f.typeOf() == IType.TType.FUN)
+      return new FunType();
+    else throw new TypeError();
   }
 
   public void compile(CodeBlock c) {

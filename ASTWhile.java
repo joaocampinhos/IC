@@ -25,8 +25,12 @@ public class ASTWhile implements ASTNode {
     right = r;
   }
 
-  public IType typeCheck(TypeEnv e) {
-    return null;
+  public IType typeCheck(TypeEnv e) throws TypeError{
+    IType l = left.typeCheck(e);
+
+    if (l.typeOf() == IType.TType.BOOLEAN)
+      return new CmdType();
+    else throw new TypeError();
   }
 
   public void compile(CodeBlock c) {

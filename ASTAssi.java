@@ -17,8 +17,12 @@ public class ASTAssi implements ASTNode {
     r = t2;
   }
 
-  public IType typeCheck(TypeEnv e) {
-    return null;
+  public IType typeCheck(TypeEnv e) throws TypeError{
+    IType tt = t.typeCheck(e);
+
+    if (tt.typeOf() == IType.TType.REFERENCE)
+      return new RefType();
+    else throw new TypeError();
   }
 
   public void compile(CodeBlock c) {
