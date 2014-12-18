@@ -10,7 +10,7 @@ public class ASTId implements ASTNode {
   }
 
   public IType typeCheck(TypeEnv e) throws TypeError{
-    return new RefType();
+    return e.find(val);
   }
 
 

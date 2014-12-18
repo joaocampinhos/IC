@@ -11,7 +11,12 @@ public class ASTNew implements ASTNode {
   }
 
   public IType typeCheck(TypeEnv e) throws TypeError{
-    return new RefType();
+
+    IType n = t.typeCheck(e);
+
+    RefType res = new RefType(n);
+
+    return res;
   }
 
   public void compile(CodeBlock c) {
