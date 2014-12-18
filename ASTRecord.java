@@ -13,6 +13,7 @@ public class ASTRecord implements ASTNode {
     }
 
     RecValue r = new RecValue(eaux);
+    eaux.endScope();
     return r;
   }
 
@@ -21,7 +22,18 @@ public class ASTRecord implements ASTNode {
   }
 
   public IType typeCheck(TypeEnv e) throws TypeError {
-    return new CmdType();
+
+    TypeEnv eaux = e.beginScope();
+
+    Iterator<Binding> it = ve.iterator();
+    while(it.hasNext()) {
+      Binding a = it.next();
+      eaux.assoc(a.getId(), a.getExp().typeCheck(e));
+    }
+
+    RecType r = new RecType(eaux);
+    eaux.endScope();
+    return r;
   }
 
   public void compile(CodeBlock c) {

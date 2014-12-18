@@ -27,7 +27,19 @@ public class ASTGetRec implements ASTNode {
   }
 
   public IType typeCheck(TypeEnv e) throws TypeError {
-    return new CmdType();
+
+    IType r = t.typeCheck(e);
+
+    if (r.typeOf() == IType.TType.RECORD) {
+
+      RecType rec = (RecType)r;
+
+      TypeEnv ee = rec.getEnv();
+      IType idv = id.typeCheck(ee);
+
+      return idv;
+
+    } else throw new TypeError();
   }
 
   public void compile(CodeBlock c) {

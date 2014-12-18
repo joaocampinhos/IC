@@ -13,7 +13,7 @@ public class Main {
   public static final String ANSI_CYAN = "\u001B[36m";
   public static final String ANSI_WHITE = "\u001B[37m";
 
-  public static void main(String args[]) throws IOException, ParseException, TypeError, UndefinedField{
+  public static void main(String args[]) throws IOException, ParseException, TypeError{
 
     if (args.length > 0) {
 
