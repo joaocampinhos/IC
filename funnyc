@@ -12,6 +12,6 @@ echo "A Compilação só foi implementada nalguns nós básicos"
 filename=$(basename "$FILE")
 filename="${filename%.*}"
 
-make c input=$FILE output=$filename > /dev/null
+make c input=$FILE output=$filename
 
 echo "run with: java $filename"

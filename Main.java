@@ -79,17 +79,20 @@ public class Main {
 
         //Compilador
 
+        ASTNode exp;
+        Parser parser;
+
         CodeBlock c;
         if (args.length > 0){
           c = new CodeBlock();
-          Parser parser = new Parser(new FileInputStream(args[1]));
-          ASTNode exp = parser.Prog();
+          parser = new Parser(new FileInputStream(args[1]));
           try {
-          exp.typeCheck(new TypeEnv());
+            exp = parser.Prog();
+            exp.typeCheck(new TypeEnv());
+            exp.compile(c);
           } catch (TypeError e) {
-              System.out.println (ANSI_RED + "Unexpected operand type!" + ANSI_RESET);
+            System.out.println (ANSI_RED + "Unexpected operand type!" + ANSI_RESET);
           }
-          exp.compile(c);
           FileWriter writer = new FileWriter(new File("ctmp"), false);
           writer.write(c.print());
           writer.close();
