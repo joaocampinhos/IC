@@ -7,5 +7,11 @@ then
   make >/dev/null
 fi
 
-make c input=$FILE output=$FILE > /dev/null
-echo "run with: java $(output)"
+echo "A Compilação só foi implementada nalguns nós básicos"
+
+filename=$(basename "$FILE")
+filename="${filename%.*}"
+
+make c input=$FILE output=$filename > /dev/null
+
+echo "run with: java $filename"

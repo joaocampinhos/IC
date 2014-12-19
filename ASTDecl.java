@@ -32,7 +32,7 @@ public class ASTDecl implements ASTNode {
 
     while (it.hasNext()) {
       Binding a = it.next();
-      e.assoc(a.getId(), a.getExp().typeCheck(e));
+      en.assoc(a.getId(), a.getExp().typeCheck(en));
     }
 
     IType v = t.typeCheck(en);
