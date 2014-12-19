@@ -10,10 +10,11 @@ public class ASTDecl implements ASTNode {
 
     while (it.hasNext()) {
       Binding a = it.next();
-      e.assoc(a.getId(), a.getExp().eval(e));
+      en.assoc(a.getId(), a.getExp().eval(en));
     }
 
     IValue v = t.eval(en);
+
     en.endScope();
 
     return v;
