@@ -31,6 +31,7 @@ public class Main {
 
           try {
             exp = parser.Prog();
+            System.out.println("-> "+exp.typeCheck(new TypeEnv()));
             exp.eval(new Env());
           }
           catch (Env.UndeclaredIdentifier e) {

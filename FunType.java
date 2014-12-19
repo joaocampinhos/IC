@@ -18,7 +18,7 @@ public class FunType implements IType{
   }
 
   public String toString() {
-    return "fun";
+    return "function";
   }
 
   public Vector<String> getParameter() {
