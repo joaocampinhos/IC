@@ -31,7 +31,7 @@ public class Main {
 
           try {
             exp = parser.Prog();
-            System.out.println("-> "+exp.typeCheck(new TypeEnv()));
+            exp.typeCheck(new TypeEnv());
             exp.eval(new Env());
           }
           catch (Env.UndeclaredIdentifier e) {
@@ -41,7 +41,7 @@ public class Main {
             System.out.println (ANSI_RED + "Id declared twice." + ANSI_RESET);
           }
           catch (TypeError e) {
-            System.out.println (ANSI_RED + "Unexpected operand type.!" + ANSI_RESET);
+            System.out.println (ANSI_RED + "Unexpected operand type!" + ANSI_RESET);
           }
           catch (ParseException e) {
             System.out.println (ANSI_RED + "Syntax error." + ANSI_RESET);
@@ -54,7 +54,7 @@ public class Main {
             System.out.print("> ");
             try {
               exp = parser.Prog();
-              System.out.println("-> "+exp.typeCheck(new TypeEnv()));
+              exp.typeCheck(new TypeEnv());
               System.out.println(ANSI_YELLOW + exp.eval(new Env()) + ANSI_RESET);
             }
             catch (Env.UndeclaredIdentifier e) {
@@ -66,7 +66,7 @@ public class Main {
               parser.ReInit(System.in);
             }
             catch (TypeError e) {
-              System.out.println (ANSI_RED + "Unexpected operand type.!" + ANSI_RESET);
+              System.out.println (ANSI_RED + "Unexpected operand type!" + ANSI_RESET);
               parser.ReInit(System.in);
             }
             catch (ParseException e) {
@@ -84,6 +84,11 @@ public class Main {
           c = new CodeBlock();
           Parser parser = new Parser(new FileInputStream(args[1]));
           ASTNode exp = parser.Prog();
+          try {
+          exp.typeCheck(new TypeEnv());
+          } catch (TypeError e) {
+              System.out.println (ANSI_RED + "Unexpected operand type!" + ANSI_RESET);
+          }
           exp.compile(c);
           FileWriter writer = new FileWriter(new File("ctmp"), false);
           writer.write(c.print());
